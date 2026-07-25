@@ -1,0 +1,3 @@
+"NSMicrophoneUsageDescription" = "Records your speech only when you consent in the app and enable scoring.";
+"NSMotionUsageDescription" = "Used to play audio when you shake the device.";
+"NSSpeechRecognitionUsageDescription" = "Sends the scoring recording to Apple Speech Recognition for transcription. Apple may process it on its servers.";

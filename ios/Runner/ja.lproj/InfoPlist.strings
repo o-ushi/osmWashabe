@@ -1,0 +1,3 @@
+"NSMicrophoneUsageDescription" = "アプリ内で同意して採点を有効にした場合だけ、発話を録音します。";
+"NSMotionUsageDescription" = "端末を振ったときに音声を再生するために使用します。";
+"NSSpeechRecognitionUsageDescription" = "採点用録音をApple音声認識へ送信して文字化します。Appleのサーバーで処理される場合があります。";

@@ -1,0 +1,3 @@
+"NSMicrophoneUsageDescription" = "Chỉ ghi âm khi bạn đồng ý trong ứng dụng và bật chấm điểm.";
+"NSMotionUsageDescription" = "Dùng để phát âm thanh khi bạn lắc thiết bị.";
+"NSSpeechRecognitionUsageDescription" = "Gửi bản ghi chấm điểm tới Nhận dạng giọng nói Apple để chuyển thành văn bản. Apple có thể xử lý trên máy chủ.";
