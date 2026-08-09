@@ -49,7 +49,8 @@ abstract final class AppStrings {
     '終了・切替のバイブレーション': 'スピーチ終了のバイブレーション',
     'フェーズ切替音': 'フェーズ切替音',
     '準備15秒のバイブレーション': '準備15秒のバイブレーション',
-    'タイマー音_バイブレーション説明': '「スピーチ終了」はタイマー終了時に振動します。「準備15秒」はカウント中の1秒ごと振動と、準備→発話開始の切替時の振動を含みます。',
+    'タイマー音_バイブレーション説明':
+        '「スピーチ終了」はタイマー終了時に振動します。「準備15秒」はカウント中の1秒ごと振動と、準備→発話開始の切替時の振動を含みます。',
     '通知音_なし': 'なし',
     '通知音_不明': '不明',
     '通知音_三連音': '三連音',
@@ -108,7 +109,8 @@ abstract final class AppStrings {
     '停止中': '停止中',
     '時間終了': '時間終了',
     '計測中': '計測中',
-    '模擬試験紹介': '10問連続出題（通常45秒×7問、通常60秒×1問、通常15+60秒×1問、敬語シチュエーション×1問）で練習できます。タイマー終了後、自動的に次の問題へ進みます。',
+    '模擬試験紹介':
+        '10問連続出題（通常45秒×7問、通常60秒×1問、通常15+60秒×1問、敬語シチュエーション×1問）で練習できます。タイマー終了後、自動的に次の問題へ進みます。',
     '模擬試験内訳_通常': '通常（45秒）',
     '模擬試験内訳_60秒': '通常（60秒）',
     '模擬試験内訳_準備付き': '通常（15秒＋60秒）',
@@ -126,7 +128,8 @@ abstract final class AppStrings {
     '聞き返し中': '聞き返し中',
     'その他': 'その他',
     'ヘルプ': 'ヘルプ',
-    'ヘルプ紹介文': '日本語スピーチの練習アプリです。1問ずつの練習に加え、10問連続出題の模擬試験にも対応しています。採点（試験版）や Chrome AI でのお題取り込みにも対応しています。',
+    'ヘルプ紹介文':
+        '日本語スピーチの練習アプリです。1問ずつの練習に加え、10問連続出題の模擬試験にも対応しています。採点（試験版）や Chrome AI でのお題取り込みにも対応しています。',
     '基本操作': '基本操作',
     '読み上げとお題': '読み上げとお題',
     '各種設定': '各種設定',
@@ -143,8 +146,7 @@ abstract final class AppStrings {
     'help.mock.body':
         '「模擬試験」では10問が連続で出題されます（通常45秒×7、通常60秒×1、通常15+60秒×1、敬語シチュエーション×1）。タイマー終了後、自動的に次へ進みます。',
     'help.timer.title': 'タイマー',
-    'help.timer.body':
-        '▶︎ で計測開始、⏸ で一時停止、↺ でリセットです。終了時に音とバイブレーションが鳴ります。',
+    'help.timer.body': '▶︎ で計測開始、⏸ で一時停止、↺ でリセットです。終了時に音とバイブレーションが鳴ります。',
     'help.scoring.section': '採点（試験版）',
     'help.scoring.title': '採点機能',
     'help.scoring.body':
@@ -171,8 +173,7 @@ abstract final class AppStrings {
         'クリップボードから読み込みました。内容を確認して「お題を取り込む」を押してください。',
     'お題を読み取れませんでした。【日常の身近な話題】【ビジネスシーン】【シチュエーション】の見出し付きで貼り付けてください。':
         'お題を読み取れませんでした。【日常の身近な話題】【ビジネスシーン】【シチュエーション】の見出し付きで貼り付けてください。',
-    '新しいお題はありませんでした（すべて重複しています）。':
-        '新しいお題はありませんでした（すべて重複しています）。',
+    '新しいお題はありませんでした（すべて重複しています）。': '新しいお題はありませんでした（すべて重複しています）。',
     '日常の身近な話題 %lld 件、ビジネスシーン %lld 件、シチュエーション %lld 件を追加しました。':
         '日常の身近な話題 %1件、ビジネスシーン %2件、シチュエーション %3件を追加しました。',
     'Chrome の AI モードを開き、検索欄にプロンプトをセットします（osmStroll の「Google AIで調べる」と同じ方式）。':
@@ -250,8 +251,7 @@ abstract final class AppStrings {
     '単文が中心': '単文が中心',
     '複文・重文を使用': '複文・重文を使用',
     '複文・重文が中心': '複文・重文が中心',
-    '3軸の参考値。公式採点とは大きく異なる場合があります。':
-        '3軸の参考値。公式採点とは大きく異なる場合があります。',
+    '3軸の参考値。公式採点とは大きく異なる場合があります。': '3軸の参考値。公式採点とは大きく異なる場合があります。',
     '時間の使い方': '時間の使い方',
     '発話枠': '発話枠',
     '発話文字数': '発話文字数',
@@ -271,17 +271,14 @@ abstract final class AppStrings {
     '音声認識ログ': '音声認識ログ',
     '音声認識ログ_説明':
         '直近の音声認識の動きを端末に保存しています。フリーズした場合はアプリを再起動し、設定 → 音声認識ログ を開いてください。',
-    '音声認識ログ_設定説明':
-        'フリーズ・クラッシュ後もここからログを確認できます。',
+    '音声認識ログ_設定説明': 'フリーズ・クラッシュ後もここからログを確認できます。',
     '再読み込み': '再読み込み',
     'コピー': 'コピー',
     'コピーしました': 'コピーしました',
     'クリア': 'クリア',
-    '丁寧語は検出されず（STTがです/ますを落とした可能性）':
-        '丁寧語は検出されず（STTがです/ますを落とした可能性）',
+    '丁寧語は検出されず（STTがです/ますを落とした可能性）': '丁寧語は検出されず（STTがです/ますを落とした可能性）',
     '参考サンプルとの比較': '参考サンプルとの比較',
-    '参考サンプル_説明':
-        '%1秒枠の参考値と比較しています（15+60秒モードは発話60秒）。流暢さは想定タイミングでシミュレーションしています。',
+    '参考サンプル_説明': '%1秒枠の参考値と比較しています（15+60秒モードは発話60秒）。流暢さは想定タイミングでシミュレーションしています。',
     'あなた': 'あなた',
     'レベル4参考': 'Lv.4',
     'レベル9参考': 'Lv.9',
@@ -297,10 +294,8 @@ abstract final class AppStrings {
     'キャリブレーション（開発者）': 'キャリブレーション（開発者）',
     '参考レベルが算出できませんでした。キャリブレーションは利用できません。':
         '参考レベルが算出できませんでした。キャリブレーションは利用できません。',
-    '参考レベル_日本語として不十分':
-        '日本語として十分に認識できなかったため、参考レベルは算出しません。',
-    '参考レベル_発話が短すぎます':
-        '発話が短すぎるため、参考レベルは算出しません。',
+    '参考レベル_日本語として不十分': '日本語として十分に認識できなかったため、参考レベルは算出しません。',
+    '参考レベル_発話が短すぎます': '発話が短すぎるため、参考レベルは算出しません。',
     '補正係数': '補正係数',
     '評価傾向': '評価傾向',
     '学習回数': '学習回数',
@@ -314,11 +309,16 @@ abstract final class AppStrings {
     '各指標の定義_注記': 'この閾値はアプリ独自の近似値です。公式のJSST採点基準とは異なります。',
     '各指標の定義_閾値': '閾値',
     '各指標の定義_参考のみ': '参考のみ（レベル判定には直接使わない）',
-    '指標定義_枠あたりの発話量': '発話枠（45秒・60秒）あたりの発話量を1分換算した値。STTが認識した文字数 ÷ 発話枠（秒） × 60 で算出します。',
-    '指標定義_時間の利用率': '発話枠のうち実際に話していたと推定される時間の割合。推定発話時間 ÷ 発話枠で算出（1文字あたり約0.18秒で換算）。値が大きいほど途切れずに話せています。',
-    '指標定義_推定沈黙の割合': '発話枠のうち沈黙と推定される時間の割合。最初の発話までの時間とチャンク間のギャップから算出。値が小さいほどテンポよく話せています。',
-    '指標定義_複雑度': '発話を句点（。！？）で区切った単位のうち、従属接続表現（ので・から・けど・ながら等）や並列表現（たり・ですが等）を含む単位の割合。高いほど複文・重文を多用しています。',
-    '指標定義_丁寧語の検出数': 'です/ます体として検出されたユニークな表現の種類数。STTがです/ますを省略することがあるため、口語的代替表現も補完的に集計。レベル判定には直接使わず参考値として表示。',
+    '指標定義_枠あたりの発話量':
+        '発話枠（45秒・60秒）あたりの発話量を1分換算した値。STTが認識した文字数 ÷ 発話枠（秒） × 60 で算出します。',
+    '指標定義_時間の利用率':
+        '発話枠のうち実際に話していたと推定される時間の割合。推定発話時間 ÷ 発話枠で算出（1文字あたり約0.18秒で換算）。値が大きいほど途切れずに話せています。',
+    '指標定義_推定沈黙の割合':
+        '発話枠のうち沈黙と推定される時間の割合。最初の発話までの時間とチャンク間のギャップから算出。値が小さいほどテンポよく話せています。',
+    '指標定義_複雑度':
+        '発話を句点（。！？）で区切った単位のうち、従属接続表現（ので・から・けど・ながら等）や並列表現（たり・ですが等）を含む単位の割合。高いほど複文・重文を多用しています。',
+    '指標定義_丁寧語の検出数':
+        'です/ます体として検出されたユニークな表現の種類数。STTがです/ますを省略することがあるため、口語的代替表現も補完的に集計。レベル判定には直接使わず参考値として表示。',
     // ── サポート・クラッシュログ ──
     'サポート': 'サポート',
     'クラッシュログを送信': 'クラッシュログを送信',
@@ -337,13 +337,17 @@ abstract final class AppStrings {
     '採点履歴': '採点履歴',
     'プライバシー_音声認識タイトル': 'OS音声認識への録音共有',
     'プライバシー_音声認識同意本文':
-        '採点を有効にすると、発話を録音します。録音は、iOSではAppleの音声認識サービスへ、Androidでは端末に設定された音声認識事業者（Google等）へ渡り、事業者のサーバーで処理される場合があります。認識結果は採点のため端末内で使用します。同意しない場合、録音も音声認識も行いません。\n\nこの同意は設定の「プライバシー」からいつでも撤回できます。同意文の版: 1',
+        '採点を有効にすると、発話を録音します。録音は、端末のOS音声認識サービスへ渡り、認識に失敗した場合のみ端末内のVoskモデル（オフライン）で処理し、外部へは送信しません。認識結果は採点のため端末内で使用します。同意しない場合、録音も音声認識も行いません。\n\nこの同意は設定の「プライバシー」からいつでも撤回できます。同意文の版: 1',
+    'プライバシー_音声認識同意本文_iOS':
+        '採点を有効にすると、発話を録音します。録音は、OSに搭載された音声認識サービス（Appleの音声認識）へ渡り、Appleのサーバーで処理される場合があります。認識結果は採点のため端末内で使用します。同意しない場合、録音も音声認識も行いません。\n\nこの同意は設定の「プライバシー」からいつでも撤回できます。Appleの規約・プライバシーポリシーが適用されます。同意文の版: 1',
     'プライバシー_音声認識設定説明': '版1の同意。オフにすると採点も無効になり、録音・認識しません。',
     'プライバシー_同意しない': '同意しない',
     'プライバシー_同意する': '同意する',
     'プライバシー_録音セクション見出し': '録音と音声認識',
     'プライバシー_録音セクション本文':
-        '採点時だけ録音し、最後の録音を端末内に保持します。次の録音または全データ削除で削除します。OS事業者側の処理は各社のポリシーに従います。',
+        '採点時だけ録音し、最後の録音を端末内に保持します。次の録音または全データ削除で削除します。録音は端末のOS音声認識サービス、もしくは認識に失敗した場合のみ端末内のVoskモデル（オフライン）で処理します。',
+    'プライバシー_録音セクション本文_iOS':
+        '採点時だけ録音し、最後の録音を端末内に保持します。次の録音または全データ削除で削除します。録音はOSに搭載された音声認識サービス（Appleの音声認識）で処理されます。Appleのポリシーに従います。',
     'プライバシー_診断ログセクション見出し': '診断ログ',
     'プライバシー_診断ログセクション本文':
         'Dart例外、stack trace、OS種別、セッション・音声認識の診断ログを端末内に保持します。自動送信しません。メール（開発者: osam.in.az@gmail.com）またはGoogle Apps Script webhookを別々に選び、内容と送信先を確認して同意した場合だけ送信します。',
@@ -355,10 +359,13 @@ abstract final class AppStrings {
     'プライバシー_保持削除セクション見出し': '保持と削除',
     'プライバシー_保持削除セクション本文':
         '設定・お題・ログは削除するまで端末内に保持します。「全データを削除」で録音、Dart/nativeログ、音声認識ログ、設定、お題を削除します。AndroidのVoskモデルも再生成可能なキャッシュとして削除し、必要時に同梱データから再生成します。',
+    'プライバシー_保持削除セクション本文_iOS':
+        '設定・お題・ログは削除するまで端末内に保持します。「全データを削除」で録音、Dart/nativeログ、音声認識ログ、設定、お題を削除します。',
     'Appleプライバシーポリシー': 'Appleプライバシーポリシー',
     'Googleプライバシーポリシー': 'Googleプライバシーポリシー',
     '全データを削除': '全データを削除',
     'プライバシー_全データ削除確認': '録音、ログ、設定、取り込んだお題、同意記録、Voskキャッシュをこの端末から削除します。',
+    'プライバシー_全データ削除確認_iOS': '録音、ログ、設定、取り込んだお題、同意記録をこの端末から削除します。',
     '削除': '削除',
     '削除中…': '削除中…',
     'プライバシー_全データ削除完了': '端末内の全データを削除しました。',
@@ -374,7 +381,8 @@ abstract final class AppStrings {
     'アプリの表示言語を変更できます。': 'You can change the app display language.',
     '読み上げ': 'Read Aloud',
     '読み上げ_音声なし': 'No TTS (Settings > Text-to-speech > Add Japanese)',
-    '読み上げ_音声なし_iOS': 'No Japanese voice (Settings > Accessibility > Spoken Content > Voices > Add Japanese)',
+    '読み上げ_音声なし_iOS':
+        'No Japanese voice (Settings > Accessibility > Spoken Content > Voices > Add Japanese)',
     '声質': 'Voice',
     '男性の声': 'Male voice',
     '女性の声': 'Female voice',
@@ -402,7 +410,8 @@ abstract final class AppStrings {
     '終了・切替のバイブレーション': 'Vibration on completion',
     'フェーズ切替音': 'Phase transition sound',
     '準備15秒のバイブレーション': 'Preparation tick vibration',
-    'タイマー音_バイブレーション説明': 'Completion and preparation vibrations can be toggled independently.',
+    'タイマー音_バイブレーション説明':
+        'Completion and preparation vibrations can be toggled independently.',
     '通知音_なし': 'None',
     '通知音_不明': 'Unknown',
     '通知音_三連音': 'Tri-tone',
@@ -479,7 +488,8 @@ abstract final class AppStrings {
     '聞き返し中': 'Repeating…',
     'その他': 'More',
     'ヘルプ': 'Help',
-    'ヘルプ紹介文': 'Japanese speech practice with mock exams, experimental scoring, and topic import via Chrome AI.',
+    'ヘルプ紹介文':
+        'Japanese speech practice with mock exams, experimental scoring, and topic import via Chrome AI.',
     '基本操作': 'Basics',
     '読み上げとお題': 'Speech & Topics',
     '各種設定': 'Settings',
@@ -509,9 +519,11 @@ abstract final class AppStrings {
     'help.import.body':
         'Open the … menu to launch Chrome AI with the prompt, copy the answer, and import. Topics are sorted into Daily Topics, Business Scene, and Situation.',
     'help.settings.language.title': 'Language',
-    'help.settings.language.body': 'Choose English, Japanese, or Vietnamese in Settings.',
+    'help.settings.language.body':
+        'Choose English, Japanese, or Vietnamese in Settings.',
     'help.privacy.title': 'Privacy',
-    'help.privacy.body': 'Review speech-recognition consent or delete all data from Settings → Privacy.',
+    'help.privacy.body':
+        'Review speech-recognition consent or delete all data from Settings → Privacy.',
     'help.settings.timer.title': 'Timer settings',
     'help.settings.timer.body':
         'Change completion sound, vibration, and interval in Settings.',
@@ -540,7 +552,8 @@ abstract final class AppStrings {
     '）をタップ': ')',
     'ボタンが見つからない・反応しない場合：\n回答を長押し →「すべて選択」→「コピー」':
         'Button missing or unresponsive:\nLong-press answer → Select All → Copy',
-    'このアプリに戻る（回答が自動で読み込まれます）': 'Return to this app (answer loads automatically)',
+    'このアプリに戻る（回答が自動で読み込まれます）':
+        'Return to this app (answer loads automatically)',
     '「お題を取り込む」ボタンをタップして完了！': 'Tap "Import Topics" — done!',
     '通常は自動で読み込まれます。うまく読み込まれない場合はここに貼り付けてください。':
         "Loads automatically. Paste here if it doesn't.",
@@ -554,10 +567,12 @@ abstract final class AppStrings {
     // ── Interval ──
     'インターバル': 'Interval',
     'インターバル_なし': 'None',
-    'インターバル_説明': 'Set the wait time before advancing to the next question after the timer ends.',
+    'インターバル_説明':
+        'Set the wait time before advancing to the next question after the timer ends.',
     '採点履歴を保持する': 'Keep scoring history',
     '採点履歴をリセット': 'Reset scoring history',
-    '採点履歴_説明': 'When enabled, up to 5 recent results are kept even after drawing a new topic.',
+    '採点履歴_説明':
+        'When enabled, up to 5 recent results are kept even after drawing a new topic.',
     '次の問題まで': 'Next question in',
     // ── Misc ──
     'タイマー': 'Timer',
@@ -626,8 +641,7 @@ abstract final class AppStrings {
     '音声認識ログ': 'Speech recognition log',
     '音声認識ログ_説明':
         'Recent speech recognition activity is saved on this device. After a freeze, restart the app and open Settings → Speech recognition log.',
-    '音声認識ログ_設定説明':
-        'You can review logs here even after a freeze or crash.',
+    '音声認識ログ_設定説明': 'You can review logs here even after a freeze or crash.',
     '再読み込み': 'Reload',
     'コピー': 'Copy',
     'コピーしました': 'Copied',
@@ -666,24 +680,30 @@ abstract final class AppStrings {
     '辛め': 'Strict',
     // ── Indicator definitions ──
     '各指標の定義': 'Indicator Definitions',
-    '各指標の定義_注記': 'These thresholds are app-specific approximations, not official JSST criteria.',
+    '各指標の定義_注記':
+        'These thresholds are app-specific approximations, not official JSST criteria.',
     '各指標の定義_閾値': 'Thresholds',
     '各指標の定義_参考のみ': 'Reference only (not used directly in scoring)',
-    '指標定義_枠あたりの発話量': 'Speaking output within the allotted window, normalized to a per-minute rate. Calculated as: character count ÷ allotted seconds × 60.',
-    '指標定義_時間の利用率': 'Estimated proportion of the allotted window actually spent speaking. Calculated as: estimated speaking time ÷ allotted seconds (approx. 5.5 chars/sec). Higher values indicate more sustained speech.',
-    '指標定義_推定沈黙の割合': 'Estimated proportion of the allotted window spent in silence. Derived from time-to-first-speech and inter-chunk gaps. Lower values indicate a better speaking tempo.',
-    '指標定義_複雑度': 'Proportion of utterance units (delimited by sentence-ending punctuation) that contain subordinate connectors (ので, から, けど, ながら, etc.) or coordinating expressions (たり, ですが, etc.). Higher values indicate more complex sentence structures.',
-    '指標定義_丁寧語の検出数': 'Number of unique polite-form patterns (desu/masu endings) detected. Since STT sometimes drops desu/masu, colloquial alternatives are also counted. Shown for reference only; not applied directly to level scoring.',
+    '指標定義_枠あたりの発話量':
+        'Speaking output within the allotted window, normalized to a per-minute rate. Calculated as: character count ÷ allotted seconds × 60.',
+    '指標定義_時間の利用率':
+        'Estimated proportion of the allotted window actually spent speaking. Calculated as: estimated speaking time ÷ allotted seconds (approx. 5.5 chars/sec). Higher values indicate more sustained speech.',
+    '指標定義_推定沈黙の割合':
+        'Estimated proportion of the allotted window spent in silence. Derived from time-to-first-speech and inter-chunk gaps. Lower values indicate a better speaking tempo.',
+    '指標定義_複雑度':
+        'Proportion of utterance units (delimited by sentence-ending punctuation) that contain subordinate connectors (ので, から, けど, ながら, etc.) or coordinating expressions (たり, ですが, etc.). Higher values indicate more complex sentence structures.',
+    '指標定義_丁寧語の検出数':
+        'Number of unique polite-form patterns (desu/masu endings) detected. Since STT sometimes drops desu/masu, colloquial alternatives are also counted. Shown for reference only; not applied directly to level scoring.',
     // ── サポート・クラッシュログ ──
     'サポート': 'Support',
     'クラッシュログを送信': 'Send Crash Log',
-    'クラッシュログ送信_説明': 'If the app has a problem, please send the log by email to help us investigate.',
+    'クラッシュログ送信_説明':
+        'If the app has a problem, please send the log by email to help us investigate.',
     'ログをクリア': 'Clear Log',
     'ログ_送信中': 'Preparing…',
     'ログ_空': 'No log available',
     'ログを送信しました': 'Log sent successfully',
-    'ログメール作成画面を開きました':
-        'Email composer opened. Tap Send to deliver the log.',
+    'ログメール作成画面を開きました': 'Email composer opened. Tap Send to deliver the log.',
     '送信に失敗しました': 'Failed to send',
     'クラッシュログ_メール件名': 'osmWashabe crash log',
     'クラッシュログ_メール送信': 'Send log',
@@ -693,14 +713,18 @@ abstract final class AppStrings {
     '採点履歴': 'Scoring history',
     'プライバシー_音声認識タイトル': 'Share recordings with OS speech recognition',
     'プライバシー_音声認識同意本文':
-        'When scoring is enabled, the app records your speech. On iOS, recordings are provided to Apple Speech Recognition. On Android, they are provided to the speech-recognition provider configured on your device (such as Google). The provider may process recordings on its servers. Recognition results are used on-device for scoring. If you decline, no recording or speech recognition occurs.\n\nYou can withdraw consent anytime in Settings > Privacy. Consent notice version: 1',
+        'When scoring is enabled, the app records your speech. Recordings are sent to the speech-recognition service built into the OS; if recognition fails, it falls back to the on-device Vosk model (offline) and nothing is sent externally. Recognition results are used on-device for scoring. If you decline, no recording or speech recognition occurs.\n\nYou can withdraw consent anytime in Settings > Privacy. Consent notice version: 1',
+    'プライバシー_音声認識同意本文_iOS':
+        'When scoring is enabled, the app records your speech. Recordings are sent to the speech-recognition service built into the OS (Apple Speech Recognition) and may be processed on Apple\'s servers. Recognition results are used on-device for scoring. If you decline, no recording or speech recognition occurs.\n\nYou can withdraw consent anytime in Settings > Privacy. Apple\'s terms and privacy policy apply. Consent notice version: 1',
     'プライバシー_音声認識設定説明':
         'Consent version 1. Turning this off also disables scoring, recording, and recognition.',
     'プライバシー_同意しない': 'Decline',
     'プライバシー_同意する': 'Agree',
     'プライバシー_録音セクション見出し': 'Recording and speech recognition',
     'プライバシー_録音セクション本文':
-        'Recording occurs only for scoring. The last recording remains on-device until the next recording or deletion. Provider processing follows its own policy.',
+        'Recording occurs only for scoring. The last recording remains on-device until the next recording or deletion. Recordings are processed by the speech-recognition service built into the OS, or by the on-device Vosk model (offline) if recognition fails.',
+    'プライバシー_録音セクション本文_iOS':
+        'Recording occurs only for scoring. The last recording remains on-device until the next recording or deletion. Recordings are processed by the speech-recognition service built into the OS (Apple Speech Recognition), per Apple\'s policy.',
     'プライバシー_診断ログセクション見出し': 'Diagnostic logs',
     'プライバシー_診断ログセクション本文':
         'Dart exceptions, stack traces, OS type, session details, and speech diagnostics are stored on-device and never sent automatically. You separately choose email (developer: osam.in.az@gmail.com) or a Google Apps Script webhook and consent before each send.',
@@ -713,11 +737,15 @@ abstract final class AppStrings {
     'プライバシー_保持削除セクション見出し': 'Retention and deletion',
     'プライバシー_保持削除セクション本文':
         'Settings, topics, and logs remain until deleted. Delete All Data removes recordings, Dart/native and speech logs, settings, topics, and the Android Vosk model, which is a regenerable cache restored from bundled data when needed.',
+    'プライバシー_保持削除セクション本文_iOS':
+        'Settings, topics, and logs remain until deleted. Delete All Data removes recordings, Dart/native and speech logs, settings, and topics.',
     'Appleプライバシーポリシー': 'Apple Privacy Policy',
     'Googleプライバシーポリシー': 'Google Privacy Policy',
     '全データを削除': 'Delete All Data',
     'プライバシー_全データ削除確認':
         'Delete recordings, logs, settings, imported topics, consent records, and the Vosk cache from this device?',
+    'プライバシー_全データ削除確認_iOS':
+        'Delete recordings, logs, settings, imported topics, and consent records from this device?',
     '削除': 'Delete',
     '削除中…': 'Deleting…',
     'プライバシー_全データ削除完了': 'All on-device data was deleted.',
@@ -733,7 +761,8 @@ abstract final class AppStrings {
     'アプリの表示言語を変更できます。': 'Bạn có thể đổi ngôn ngữ hiển thị.',
     '読み上げ': 'Đọc to',
     '読み上げ_音声なし': 'Không có TTS (Cài đặt > TTS > Thêm tiếng Nhật)',
-    '読み上げ_音声なし_iOS': 'Không có giọng tiếng Nhật (Cài đặt > Trợ năng > Nội dung đọc > Giọng > Thêm tiếng Nhật)',
+    '読み上げ_音声なし_iOS':
+        'Không có giọng tiếng Nhật (Cài đặt > Trợ năng > Nội dung đọc > Giọng > Thêm tiếng Nhật)',
     '声質': 'Giọng nói',
     '男性の声': 'Giọng nam',
     '女性の声': 'Giọng nữ',
@@ -838,7 +867,8 @@ abstract final class AppStrings {
     '聞き返し中': 'Đang nghe lại…',
     'その他': 'Khác',
     'ヘルプ': 'Trợ giúp',
-    'ヘルプ紹介文': 'Ứng dụng luyện nói tiếng Nhật với thi thử, chấm điểm thử nghiệm và nhập chủ đề qua Chrome AI.',
+    'ヘルプ紹介文':
+        'Ứng dụng luyện nói tiếng Nhật với thi thử, chấm điểm thử nghiệm và nhập chủ đề qua Chrome AI.',
     '基本操作': 'Cơ bản',
     '読み上げとお題': 'Đọc to & Chủ đề',
     '各種設定': 'Cài đặt',
@@ -914,10 +944,12 @@ abstract final class AppStrings {
     // ── Khoảng nghỉ ──
     'インターバル': 'Khoảng nghỉ',
     'インターバル_なし': 'Không',
-    'インターバル_説明': 'Thời gian chờ trước khi chuyển câu tiếp theo sau khi hết giờ.',
+    'インターバル_説明':
+        'Thời gian chờ trước khi chuyển câu tiếp theo sau khi hết giờ.',
     '採点履歴を保持する': 'Lưu lịch sử chấm điểm',
     '採点履歴をリセット': 'Đặt lại lịch sử chấm điểm',
-    '採点履歴_説明': 'Khi bật, tối đa 5 kết quả gần nhất sẽ được giữ lại dù bạn rút câu hỏi mới.',
+    '採点履歴_説明':
+        'Khi bật, tối đa 5 kết quả gần nhất sẽ được giữ lại dù bạn rút câu hỏi mới.',
     '次の問題まで': 'Câu tiếp sau',
     // ── Khác ──
     'タイマー': 'Hẹn giờ',
@@ -986,8 +1018,7 @@ abstract final class AppStrings {
     '音声認識ログ': 'Nhật ký nhận dạng giọng nói',
     '音声認識ログ_説明':
         'Hoạt động nhận dạng giọng nói gần đây được lưu trên thiết bị. Sau khi bị đơ, hãy khởi động lại ứng dụng và mở Cài đặt → Nhật ký nhận dạng giọng nói.',
-    '音声認識ログ_設定説明':
-        'Có thể xem nhật ký ở đây ngay cả sau khi bị đơ hoặc crash.',
+    '音声認識ログ_設定説明': 'Có thể xem nhật ký ở đây ngay cả sau khi bị đơ hoặc crash.',
     '再読み込み': 'Tải lại',
     'コピー': 'Sao chép',
     'コピーしました': 'Đã sao chép',
@@ -1014,8 +1045,7 @@ abstract final class AppStrings {
         'Không thể tính cấp độ tham chiếu. Không thể sử dụng hiệu chỉnh.',
     '参考レベル_日本語として不十分':
         'Không tính cấp độ tham chiếu vì không nhận dạng đủ tiếng Nhật.',
-    '参考レベル_発話が短すぎます':
-        'Không tính cấp độ tham chiếu vì phát ngôn quá ngắn.',
+    '参考レベル_発話が短すぎます': 'Không tính cấp độ tham chiếu vì phát ngôn quá ngắn.',
     '補正係数': 'Hệ số hiệu chỉnh',
     '評価傾向': 'Xu hướng đánh giá',
     '学習回数': 'Số lần học',
@@ -1026,24 +1056,30 @@ abstract final class AppStrings {
     '辛め': 'Nghiêm khắc',
     // ── Định nghĩa chỉ số ──
     '各指標の定義': 'Định nghĩa chỉ số',
-    '各指標の定義_注記': 'Các ngưỡng này là ước tính riêng của ứng dụng, không phải tiêu chí JSST chính thức.',
+    '各指標の定義_注記':
+        'Các ngưỡng này là ước tính riêng của ứng dụng, không phải tiêu chí JSST chính thức.',
     '各指標の定義_閾値': 'Ngưỡng',
     '各指標の定義_参考のみ': 'Chỉ tham khảo (không dùng trực tiếp để chấm điểm)',
-    '指標定義_枠あたりの発話量': 'Lượng nói trong khung thời gian quy đổi theo phút. Tính bằng: số ký tự ÷ giây khung × 60.',
-    '指標定義_時間の利用率': 'Tỷ lệ ước tính thực sự nói trong khung. Tính bằng: thời gian nói ÷ khung (khoảng 5,5 ký tự/giây). Giá trị cao hơn cho thấy ít im lặng và nói liên tục hơn.',
-    '指標定義_推定沈黙の割合': 'Tỷ lệ ước tính im lặng trong khung. Bắt nguồn từ thời gian đến lần nói đầu và khoảng cách giữa các đoạn. Giá trị thấp hơn cho thấy nhịp nói tốt hơn.',
-    '指標定義_複雑度': 'Tỷ lệ đơn vị phát ngôn (phân cách bởi dấu câu) chứa liên từ phụ thuộc (ので, から, けど, ながら v.v.) hoặc biểu thức song song (たり, ですが v.v.). Giá trị cao hơn cho thấy câu phức tạp hơn.',
-    '指標定義_丁寧語の検出数': 'Số mẫu thể lịch sự (đuôi desu/masu) được phát hiện. Do STT đôi khi bỏ đuôi desu/masu, các biểu thức thay thế cũng được đếm. Chỉ tham khảo, không dùng trực tiếp để chấm điểm.',
+    '指標定義_枠あたりの発話量':
+        'Lượng nói trong khung thời gian quy đổi theo phút. Tính bằng: số ký tự ÷ giây khung × 60.',
+    '指標定義_時間の利用率':
+        'Tỷ lệ ước tính thực sự nói trong khung. Tính bằng: thời gian nói ÷ khung (khoảng 5,5 ký tự/giây). Giá trị cao hơn cho thấy ít im lặng và nói liên tục hơn.',
+    '指標定義_推定沈黙の割合':
+        'Tỷ lệ ước tính im lặng trong khung. Bắt nguồn từ thời gian đến lần nói đầu và khoảng cách giữa các đoạn. Giá trị thấp hơn cho thấy nhịp nói tốt hơn.',
+    '指標定義_複雑度':
+        'Tỷ lệ đơn vị phát ngôn (phân cách bởi dấu câu) chứa liên từ phụ thuộc (ので, から, けど, ながら v.v.) hoặc biểu thức song song (たり, ですが v.v.). Giá trị cao hơn cho thấy câu phức tạp hơn.',
+    '指標定義_丁寧語の検出数':
+        'Số mẫu thể lịch sự (đuôi desu/masu) được phát hiện. Do STT đôi khi bỏ đuôi desu/masu, các biểu thức thay thế cũng được đếm. Chỉ tham khảo, không dùng trực tiếp để chấm điểm.',
     // ── サポート・クラッシュログ ──
     'サポート': 'Hỗ trợ',
     'クラッシュログを送信': 'Gửi nhật ký sự cố',
-    'クラッシュログ送信_説明': 'Khi gặp sự cố, hãy gửi nhật ký bằng email để hỗ trợ chẩn đoán.',
+    'クラッシュログ送信_説明':
+        'Khi gặp sự cố, hãy gửi nhật ký bằng email để hỗ trợ chẩn đoán.',
     'ログをクリア': 'Xóa nhật ký',
     'ログ_送信中': 'Đang chuẩn bị…',
     'ログ_空': 'Không có nhật ký',
     'ログを送信しました': 'Đã gửi nhật ký',
-    'ログメール作成画面を開きました':
-        'Đã mở soạn thư. Nhấn Gửi để gửi nhật ký.',
+    'ログメール作成画面を開きました': 'Đã mở soạn thư. Nhấn Gửi để gửi nhật ký.',
     '送信に失敗しました': 'Gửi thất bại',
     'クラッシュログ_メール件名': 'Nhật ký sự cố osmWashabe',
     'クラッシュログ_メール送信': 'Gửi nhật ký',
@@ -1053,14 +1089,18 @@ abstract final class AppStrings {
     '採点履歴': 'Lịch sử chấm điểm',
     'プライバシー_音声認識タイトル': 'Chia sẻ bản ghi với nhận dạng giọng nói của HĐH',
     'プライバシー_音声認識同意本文':
-        'Khi bật chấm điểm, ứng dụng ghi âm lời nói. Trên iOS, bản ghi được chuyển cho dịch vụ nhận dạng giọng nói của Apple. Trên Android, bản ghi được chuyển cho nhà cung cấp nhận dạng giọng nói được đặt trên thiết bị (ví dụ Google). Nhà cung cấp có thể xử lý trên máy chủ. Kết quả được dùng trên thiết bị để chấm điểm. Nếu từ chối, ứng dụng không ghi âm và không nhận dạng.\n\nBạn có thể rút lại đồng ý bất cứ lúc nào trong Cài đặt > Quyền riêng tư. Phiên bản thông báo: 1',
+        'Khi bật chấm điểm, ứng dụng ghi âm lời nói. Bản ghi được gửi đến dịch vụ nhận dạng giọng nói tích hợp trên hệ điều hành; nếu nhận dạng thất bại, ứng dụng chuyển sang mô hình Vosk ngoại tuyến trên thiết bị và không gửi gì ra ngoài. Kết quả được dùng trên thiết bị để chấm điểm. Nếu từ chối, ứng dụng không ghi âm và không nhận dạng.\n\nBạn có thể rút lại đồng ý bất cứ lúc nào trong Cài đặt > Quyền riêng tư. Phiên bản thông báo: 1',
+    'プライバシー_音声認識同意本文_iOS':
+        'Khi bật chấm điểm, ứng dụng ghi âm lời nói. Bản ghi được gửi đến dịch vụ nhận dạng giọng nói tích hợp trên hệ điều hành (Speech Recognition của Apple) và có thể được xử lý trên máy chủ của Apple. Kết quả được dùng trên thiết bị để chấm điểm. Nếu từ chối, ứng dụng không ghi âm và không nhận dạng.\n\nBạn có thể rút lại đồng ý bất cứ lúc nào trong Cài đặt > Quyền riêng tư. Áp dụng điều khoản và chính sách quyền riêng tư của Apple. Phiên bản thông báo: 1',
     'プライバシー_音声認識設定説明':
         'Đồng ý phiên bản 1. Tắt mục này cũng tắt chấm điểm, ghi âm và nhận dạng.',
     'プライバシー_同意しない': 'Không đồng ý',
     'プライバシー_同意する': 'Đồng ý',
     'プライバシー_録音セクション見出し': 'Ghi âm và nhận dạng giọng nói',
     'プライバシー_録音セクション本文':
-        'Chỉ ghi âm khi chấm điểm. Bản ghi cuối được giữ trên thiết bị đến lần ghi tiếp theo hoặc khi xóa dữ liệu. Việc xử lý của nhà cung cấp theo chính sách của họ.',
+        'Chỉ ghi âm khi chấm điểm. Bản ghi cuối được giữ trên thiết bị đến lần ghi tiếp theo hoặc khi xóa dữ liệu. Bản ghi được xử lý bởi dịch vụ nhận dạng giọng nói tích hợp trên hệ điều hành, hoặc bởi mô hình Vosk ngoại tuyến trên thiết bị nếu nhận dạng thất bại.',
+    'プライバシー_録音セクション本文_iOS':
+        'Chỉ ghi âm khi chấm điểm. Bản ghi cuối được giữ trên thiết bị đến lần ghi tiếp theo hoặc khi xóa dữ liệu. Bản ghi được xử lý bởi dịch vụ nhận dạng giọng nói tích hợp trên hệ điều hành (Speech Recognition của Apple), theo chính sách của Apple.',
     'プライバシー_診断ログセクション見出し': 'Nhật ký chẩn đoán',
     'プライバシー_診断ログセクション本文':
         'Ngoại lệ Dart, stack trace, loại HĐH, phiên và chẩn đoán giọng nói được lưu trên thiết bị, không tự động gửi. Bạn chọn riêng email (nhà phát triển: osam.in.az@gmail.com) hoặc webhook Google Apps Script và đồng ý trước mỗi lần gửi.',
@@ -1073,11 +1113,15 @@ abstract final class AppStrings {
     'プライバシー_保持削除セクション見出し': 'Lưu giữ và xóa',
     'プライバシー_保持削除セクション本文':
         'Cài đặt, chủ đề và nhật ký được giữ đến khi xóa. Xóa toàn bộ dữ liệu sẽ xóa bản ghi, nhật ký Dart/native/giọng nói, cài đặt, chủ đề và mô hình Vosk Android — bộ nhớ đệm có thể tạo lại từ dữ liệu đi kèm.',
+    'プライバシー_保持削除セクション本文_iOS':
+        'Cài đặt, chủ đề và nhật ký được giữ đến khi xóa. Xóa toàn bộ dữ liệu sẽ xóa bản ghi, nhật ký Dart/native/giọng nói, cài đặt và chủ đề.',
     'Appleプライバシーポリシー': 'Chính sách quyền riêng tư Apple',
     'Googleプライバシーポリシー': 'Chính sách quyền riêng tư Google',
     '全データを削除': 'Xóa toàn bộ dữ liệu',
     'プライバシー_全データ削除確認':
         'Xóa bản ghi, nhật ký, cài đặt, chủ đề đã nhập, bản ghi đồng ý và bộ nhớ đệm Vosk khỏi thiết bị?',
+    'プライバシー_全データ削除確認_iOS':
+        'Xóa bản ghi, nhật ký, cài đặt, chủ đề đã nhập và bản ghi đồng ý khỏi thiết bị?',
     '削除': 'Xóa',
     '削除中…': 'Đang xóa…',
     'プライバシー_全データ削除完了': 'Đã xóa toàn bộ dữ liệu trên thiết bị.',

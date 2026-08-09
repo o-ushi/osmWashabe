@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/appearance_models.dart';
 import '../theme/appearance_resolver.dart';
 
-/// アプリ固定のデフォルト外見（ユーザー切替なし）
+/// アプリ固定のデフォルト外見（ユーザー切替なし）。
+/// シーン色は端末の夜間モードに依存しない（osmGradus / osmGenki と同じ）。
 class AppAppearance {
   const AppAppearance();
 
@@ -11,13 +12,15 @@ class AppAppearance {
 
   Color get accentColor => AppearanceResolver.accentColor;
 
+  /// 固定シーン色。引数は呼び出し互換のため残しているが使わない。
   Color sceneColorFor(Brightness platformBrightness) =>
-      AppearanceResolver.sceneColor(platformBrightness);
+      AppearanceResolver.sceneColor;
 
-  Brightness effectiveColorScheme(Brightness platformBrightness) {
-    return isLightBackground(sceneColorFor(platformBrightness))
-        ? Brightness.light
-        : Brightness.dark;
+  Color get sceneColor => AppearanceResolver.sceneColor;
+
+  /// シーン色の輝度から Material の明暗を決定する（OSの明暗ではない）。
+  Brightness effectiveColorScheme([Brightness? platformBrightness]) {
+    return isLightBackground(sceneColor) ? Brightness.light : Brightness.dark;
   }
 
   FrameResolvedStyle resolvedFrameStyle() => AppearanceResolver.resolveFrame();

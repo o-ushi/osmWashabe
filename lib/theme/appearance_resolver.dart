@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../models/appearance_models.dart';
 
-/// デフォルト外見（標準テーマ・パステル枠・システム適応シーン）の解決
+/// デフォルト外見（標準テーマ・パステル枠）の解決。
+/// シーン色は osmGradus / osmGenki と同様、端末の明暗設定に依存しない。
 abstract final class AppearanceResolver {
   static const brandBlue = Color.fromRGBO(61, 89, 147, 1);
   static const accentColor = Color(0xFF007AFF);
 
-  static Color sceneColor(Brightness platformBrightness) {
-    return platformBrightness == Brightness.dark
-        ? const Color.fromRGBO(26, 26, 31, 1)
-        : brandBlue;
-  }
+  /// 固定のシーン背景色（昼夜で変えない）。
+  static Color get sceneColor => brandBlue;
 
   static FrameResolvedStyle resolveFrame() {
     const fill = Color.fromRGBO(255, 250, 242, 1);

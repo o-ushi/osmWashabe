@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -5,6 +7,7 @@ import '../../l10n/app_strings.dart';
 import '../../notifiers/app_settings.dart';
 import '../../services/app_preferences.dart';
 import '../../services/privacy_service.dart';
+import '../../widgets/swipe_down_to_dismiss.dart';
 import '../../widgets/washabe_subpage_scaffold.dart';
 
 Future<bool> showSpeechConsentDialog(
@@ -17,7 +20,12 @@ Future<bool> showSpeechConsentDialog(
     builder: (ctx) => AlertDialog(
       title: Text('プライバシー_音声認識タイトル'.tr(languageCode)),
       content: SingleChildScrollView(
-        child: Text('プライバシー_音声認識同意本文'.tr(languageCode)),
+        child: Text(
+          (Platform.isIOS
+                  ? 'プライバシー_音声認識同意本文_iOS'
+                  : 'プライバシー_音声認識同意本文')
+              .tr(languageCode),
+        ),
       ),
       actions: [
         TextButton(
@@ -56,6 +64,7 @@ class PrivacyView extends StatefulWidget {
 class _PrivacyViewState extends State<PrivacyView> {
   bool _speechConsent = false;
   bool _deleting = false;
+  final _scrollController = ScrollController();
 
   String get _lang => widget.settings.language;
 
@@ -63,6 +72,12 @@ class _PrivacyViewState extends State<PrivacyView> {
   void initState() {
     super.initState();
     _loadConsent();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadConsent() async {
@@ -89,7 +104,10 @@ class _PrivacyViewState extends State<PrivacyView> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text('全データを削除'.tr(_lang)),
-        content: Text('プライバシー_全データ削除確認'.tr(_lang)),
+        content: Text(
+          (Platform.isIOS ? 'プライバシー_全データ削除確認_iOS' : 'プライバシー_全データ削除確認')
+              .tr(_lang),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -124,61 +142,65 @@ class _PrivacyViewState extends State<PrivacyView> {
 
   @override
   Widget build(BuildContext context) {
-    return WashabeSubpageScaffold(
-      title: 'プライバシー'.tr(_lang),
-      leading: const SizedBox.shrink(),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-        children: [
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text('プライバシー_音声認識タイトル'.tr(_lang)),
-            subtitle: Text('プライバシー_音声認識設定説明'.tr(_lang)),
-            value: _speechConsent,
-            onChanged: _setConsent,
-          ),
-          const Divider(),
-          _section(
-            'プライバシー_録音セクション見出し',
-            'プライバシー_録音セクション本文',
-          ),
-          _section(
-            'プライバシー_診断ログセクション見出し',
-            'プライバシー_診断ログセクション本文',
-          ),
-          _section(
-            'プライバシー_設定お題セクション見出し',
-            'プライバシー_設定お題セクション本文',
-          ),
-          _section(
-            'プライバシー_GoogleAIセクション見出し',
-            'プライバシー_GoogleAIセクション本文',
-          ),
-          _section(
-            'プライバシー_保持削除セクション見出し',
-            'プライバシー_保持削除セクション本文',
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text('Appleプライバシーポリシー'.tr(_lang)),
-            trailing: const Icon(Icons.open_in_new),
-            onTap: () => _open('https://www.apple.com/legal/privacy/'),
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text('Googleプライバシーポリシー'.tr(_lang)),
-            trailing: const Icon(Icons.open_in_new),
-            onTap: () => _open('https://policies.google.com/privacy'),
-          ),
-          const SizedBox(height: 16),
-          OutlinedButton(
-            onPressed: _deleting ? null : _deleteAll,
-            style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(
-              _deleting ? '削除中…'.tr(_lang) : '全データを削除'.tr(_lang),
+    return SwipeDownToDismiss(
+      scrollController: _scrollController,
+      child: WashabeSubpageScaffold(
+        title: 'プライバシー'.tr(_lang),
+        leading: const SizedBox.shrink(),
+        body: ListView(
+          controller: _scrollController,
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text('プライバシー_音声認識タイトル'.tr(_lang)),
+              subtitle: Text('プライバシー_音声認識設定説明'.tr(_lang)),
+              value: _speechConsent,
+              onChanged: _setConsent,
             ),
-          ),
-        ],
+            const Divider(),
+            _section(
+              'プライバシー_録音セクション見出し',
+              Platform.isIOS ? 'プライバシー_録音セクション本文_iOS' : 'プライバシー_録音セクション本文',
+            ),
+            _section(
+              'プライバシー_診断ログセクション見出し',
+              'プライバシー_診断ログセクション本文',
+            ),
+            _section(
+              'プライバシー_設定お題セクション見出し',
+              'プライバシー_設定お題セクション本文',
+            ),
+            _section(
+              'プライバシー_GoogleAIセクション見出し',
+              'プライバシー_GoogleAIセクション本文',
+            ),
+            _section(
+              'プライバシー_保持削除セクション見出し',
+              Platform.isIOS ? 'プライバシー_保持削除セクション本文_iOS' : 'プライバシー_保持削除セクション本文',
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text('Appleプライバシーポリシー'.tr(_lang)),
+              trailing: const Icon(Icons.open_in_new),
+              onTap: () => _open('https://www.apple.com/legal/privacy/'),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text('Googleプライバシーポリシー'.tr(_lang)),
+              trailing: const Icon(Icons.open_in_new),
+              onTap: () => _open('https://policies.google.com/privacy'),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton(
+              onPressed: _deleting ? null : _deleteAll,
+              style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+              child: Text(
+                _deleting ? '削除中…'.tr(_lang) : '全データを削除'.tr(_lang),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
