@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/app_strings.dart';
 import '../../notifiers/app_settings.dart';
@@ -15,6 +16,25 @@ class HelpView extends StatefulWidget {
   });
 
   final AppSettingsNotifier settings;
+
+  /// Google スライド操作マニュアル（言語別・閲覧用 preview）。
+  /// 共有は「リンクを知っている全員」。編集 URL ではなく preview を開く。
+  /// 英語・ベトナム語は同じファイルを上書き更新する前提（ID は固定）。
+  static const userManualPresentationIdJa =
+      '1z40A2lvJK4UUnBNcvAC5vGWfLwaa9ZmCjFMZlPQ-h_0';
+  static const userManualPresentationIdEn =
+      '1F0O1UzMktD5VMwhOdNF1KoOG7Fl1lFMz1EEpgxgVapM';
+  static const userManualPresentationIdVi =
+      '114UigCR54j4tQdUayjALDJPrCLAoOGbTXMDlv_UtEDU';
+
+  static String userManualUrlFor(String language) {
+    final id = switch (language) {
+      'en' => userManualPresentationIdEn,
+      'ja' => userManualPresentationIdJa,
+      _ => userManualPresentationIdVi,
+    };
+    return 'https://docs.google.com/presentation/d/$id/preview';
+  }
 
   @override
   State<HelpView> createState() => _HelpViewState();
@@ -107,6 +127,16 @@ class _HelpViewState extends State<HelpView> {
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.black87,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: _HelpManualLink(
+                lang: lang,
+                onTap: () => launchUrl(
+                  Uri.parse(HelpView.userManualUrlFor(lang)),
+                  mode: LaunchMode.externalApplication,
                 ),
               ),
             ),
@@ -219,6 +249,79 @@ class _HelpViewState extends State<HelpView> {
         ),
         ...children,
       ],
+    );
+  }
+}
+
+class _HelpManualLink extends StatelessWidget {
+  const _HelpManualLink({
+    required this.lang,
+    required this.onTap,
+  });
+
+  final String lang;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        key: const Key('help_user_manual'),
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          child: Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: AppColors.blue,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.menu_book_outlined,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '操作マニュアル'.tr(lang),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '図解で画面ごとの使い方を見る'.tr(lang),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.open_in_new_rounded,
+                size: 18,
+                color: Colors.black54,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

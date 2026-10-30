@@ -128,6 +128,8 @@ abstract final class AppStrings {
     '聞き返し中': '聞き返し中',
     'その他': 'その他',
     'ヘルプ': 'ヘルプ',
+    '操作マニュアル': '操作マニュアル',
+    '図解で画面ごとの使い方を見る': '図解で画面ごとの使い方を見る',
     'ヘルプ紹介文':
         '日本語スピーチの練習アプリです。1問ずつの練習に加え、10問連続出題の模擬試験にも対応しています。採点（試験版）や Chrome AI でのお題取り込みにも対応しています。',
     '基本操作': '基本操作',
@@ -488,6 +490,8 @@ abstract final class AppStrings {
     '聞き返し中': 'Repeating…',
     'その他': 'More',
     'ヘルプ': 'Help',
+    '操作マニュアル': 'User manual',
+    '図解で画面ごとの使い方を見る': 'Illustrated guide for each screen',
     'ヘルプ紹介文':
         'Japanese speech practice with mock exams, experimental scoring, and topic import via Chrome AI.',
     '基本操作': 'Basics',
@@ -867,6 +871,8 @@ abstract final class AppStrings {
     '聞き返し中': 'Đang nghe lại…',
     'その他': 'Khác',
     'ヘルプ': 'Trợ giúp',
+    '操作マニュアル': 'Hướng dẫn sử dụng',
+    '図解で画面ごとの使い方を見る': 'Xem cách dùng từng màn hình bằng hình',
     'ヘルプ紹介文':
         'Ứng dụng luyện nói tiếng Nhật với thi thử, chấm điểm thử nghiệm và nhập chủ đề qua Chrome AI.',
     '基本操作': 'Cơ bản',
