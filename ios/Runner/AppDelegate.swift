@@ -264,6 +264,22 @@ private class NativeTtsHandler: NSObject, AVSpeechSynthesizerDelegate {
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
+  override func application(
+    _ application: UIApplication,
+    configurationForConnecting connectingSceneSession: UISceneSession,
+    options: UIScene.ConnectionOptions
+  ) -> UISceneConfiguration {
+    // 一度 SwiftUI.AppSceneDelegate で保存されたシーンは、Info.plist の
+    // SceneDelegate を読まずに復元される。畳んだ外側画面はプロセスが生きたまま黒くなる（osmBus と同じ対策）。
+    // SceneDelegate がウィンドウを自前で作るので storyboard は指定しない。
+    let configuration = UISceneConfiguration(
+      name: connectingSceneSession.configuration.name ?? "flutter",
+      sessionRole: connectingSceneSession.role
+    )
+    configuration.delegateClass = SceneDelegate.self
+    return configuration
+  }
+
   private func configureAudioSession() {
     do {
       let session = AVAudioSession.sharedInstance()

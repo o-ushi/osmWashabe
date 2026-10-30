@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../controllers/practice_controller.dart';
 import '../../data/mock_exam_planner.dart';
@@ -327,107 +328,113 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
         final dialogBg = effectiveScheme == Brightness.dark
             ? const Color(0xFF2C2C38)
             : Colors.white;
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: accent,
-              brightness: effectiveScheme,
-            ),
-            dialogTheme: DialogThemeData(
-              backgroundColor: dialogBg,
-              titleTextStyle: TextStyle(
-                color: fg,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+        // 時刻・バッテリーをシーン色に溶け込ませない（暗いシーンでは白）
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: effectiveScheme == Brightness.dark
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: accent,
+                brightness: effectiveScheme,
               ),
-              contentTextStyle: TextStyle(color: fg),
-            ),
-            listTileTheme: ListTileThemeData(
-              textColor: fg,
-              iconColor: fg,
-            ),
-          ),
-          child: Scaffold(
-            backgroundColor: scene,
-            body: Stack(
-              fit: StackFit.expand,
-              children: [
-                AppearanceBackgroundLayer(
-                  sceneColor: scene,
-                  colorScheme: effectiveScheme,
+              dialogTheme: DialogThemeData(
+                backgroundColor: dialogBg,
+                titleTextStyle: TextStyle(
+                  color: fg,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
                 ),
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _SessionBar(
-                          controller: _controller,
-                          settings: widget.settings,
-                          appearance: widget.appearance,
-                          scene: scene,
-                          fg: fg,
-                          moreButtonKey: _moreButtonKey,
-                          lang: lang,
-                          onMore: () => _showMoreMenu(context),
-                          onOpenScoring: _onScoringButtonLongPress,
-                          onScoringTap: _onScoringButtonTap,
-                        ),
-                        const SizedBox(height: 10),
-                        if (_controller.sessionMode ==
-                            AppSessionMode.singleQuestion)
-                          _CompactTrainingBar(
+                contentTextStyle: TextStyle(color: fg),
+              ),
+              listTileTheme: ListTileThemeData(
+                textColor: fg,
+                iconColor: fg,
+              ),
+            ),
+            child: Scaffold(
+              backgroundColor: scene,
+              body: Stack(
+                fit: StackFit.expand,
+                children: [
+                  AppearanceBackgroundLayer(
+                    sceneColor: scene,
+                    colorScheme: effectiveScheme,
+                  ),
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _SessionBar(
                             controller: _controller,
+                            settings: widget.settings,
                             appearance: widget.appearance,
                             scene: scene,
                             fg: fg,
+                            moreButtonKey: _moreButtonKey,
                             lang: lang,
+                            onMore: () => _showMoreMenu(context),
+                            onOpenScoring: _onScoringButtonLongPress,
+                            onScoringTap: _onScoringButtonTap,
                           ),
-                        const SizedBox(height: 10),
-                        Expanded(
-                          child: _controller.sessionMode ==
-                                      AppSessionMode.mockExam &&
-                                  !_controller.isMockExamActive &&
-                                  !_controller.isMockExamFinished
-                              ? _MockExamIntro(
-                                  controller: _controller,
-                                  appearance: widget.appearance,
-                                  frameStyle: frameStyle,
-                                  scene: scene,
-                                  fg: fg,
-                                  muted: muted,
-                                  lang: lang,
-                                )
-                              : _PracticeBody(
-                                  controller: _controller,
-                                  speechReader: _speechReader,
-                                  appearance: widget.appearance,
-                                  frameStyle: frameStyle,
-                                  scene: scene,
-                                  fg: fg,
-                                  muted: muted,
-                                  lang: lang,
-                                  onCategoryChanged: _controller.setCategory,
-                                ),
-                        ),
-                        if (showTimer) ...[
                           const SizedBox(height: 10),
-                          WashabeTimerSection(
-                            controller: _controller,
-                            appearance: widget.appearance,
-                            scene: scene,
-                            frameStyle: frameStyle,
-                            accent: accent,
-                            languageCode: lang,
+                          if (_controller.sessionMode ==
+                              AppSessionMode.singleQuestion)
+                            _CompactTrainingBar(
+                              controller: _controller,
+                              appearance: widget.appearance,
+                              scene: scene,
+                              fg: fg,
+                              lang: lang,
+                            ),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: _controller.sessionMode ==
+                                        AppSessionMode.mockExam &&
+                                    !_controller.isMockExamActive &&
+                                    !_controller.isMockExamFinished
+                                ? _MockExamIntro(
+                                    controller: _controller,
+                                    appearance: widget.appearance,
+                                    frameStyle: frameStyle,
+                                    scene: scene,
+                                    fg: fg,
+                                    muted: muted,
+                                    lang: lang,
+                                  )
+                                : _PracticeBody(
+                                    controller: _controller,
+                                    speechReader: _speechReader,
+                                    appearance: widget.appearance,
+                                    frameStyle: frameStyle,
+                                    scene: scene,
+                                    fg: fg,
+                                    muted: muted,
+                                    lang: lang,
+                                    onCategoryChanged: _controller.setCategory,
+                                  ),
                           ),
+                          if (showTimer) ...[
+                            const SizedBox(height: 10),
+                            WashabeTimerSection(
+                              controller: _controller,
+                              appearance: widget.appearance,
+                              scene: scene,
+                              frameStyle: frameStyle,
+                              accent: accent,
+                              languageCode: lang,
+                            ),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
