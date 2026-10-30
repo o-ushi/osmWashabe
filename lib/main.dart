@@ -97,7 +97,7 @@ class _OsmWashabeAppState extends State<OsmWashabeApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'osmWashabe',
+      title: 'osmWAshabe',
       debugShowCheckedModeBanner: false,
       locale: _locale,
       theme: ThemeData(

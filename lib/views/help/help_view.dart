@@ -104,7 +104,7 @@ class _HelpViewState extends State<HelpView> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'osmWashabe',
+                  'osmWAshabe',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,

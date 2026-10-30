@@ -15,7 +15,7 @@ void main() {
 
   setUpAll(() {
     PackageInfo.setMockInitialValues(
-      appName: 'osmWashabe',
+      appName: 'osmWAshabe',
       packageName: 'com.osamushikubo.osmWashabe',
       version: '1.0.0',
       buildNumber: '1',
