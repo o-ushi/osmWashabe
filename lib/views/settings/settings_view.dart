@@ -14,8 +14,8 @@ import '../../services/timer_alert.dart';
 import '../../services/timer_completion_sound_catalog.dart';
 import '../../services/topic_speech_reader.dart';
 import '../../widgets/swipe_down_to_dismiss.dart';
+import '../../widgets/washabe_expand_card.dart';
 import '../../widgets/washabe_subpage_scaffold.dart';
-import '../privacy/privacy_view.dart';
 import 'timer_sound_picker_view.dart';
 import 'speech_recognition_debug_log_view.dart';
 
@@ -118,6 +118,9 @@ class _SettingsViewState extends State<SettingsView> {
     ('vi', 'Tiếng Việt', '🇻🇳'),
   ];
 
+  /// 開いているグループ（見出しの翻訳キー）。
+  final Set<String> _openGroups = {};
+
   AppSettingsNotifier get settings => widget.settings;
   TimerAlert get timerAlert => widget.timerAlert;
   TopicSpeechReader get speechReader => widget.speechReader;
@@ -176,210 +179,186 @@ class _SettingsViewState extends State<SettingsView> {
                 ]),
                 _noteText('アプリの表示言語を変更できます。'.tr(lang)),
 
-                _sectionHeaderWithIcon(Icons.volume_up, '読み上げ'.tr(lang)),
-                _card([
-                  _VoiceGenderTile(
-                    label: '声質'.tr(lang),
-                    currentValue: settings.speechVoiceGender.tr(lang),
-                    onTap: () => _showGenderPicker(context, lang),
-                  ),
-                  const _ItemDivider(),
-                  _SpeechRateTile(
-                    label: '読み上げ速度'.tr(lang),
-                    slowLabel: 'ゆっくり'.tr(lang),
-                    fastLabel: 'はやい'.tr(lang),
-                    rate: settings.speechRate,
-                    onChanged: (v) => settings.speechRate = v,
-                  ),
-                  const _ItemDivider(),
-                  _ValueTile(
-                    label: '使用中の声'.tr(lang),
-                    value: speechReader.activeVoiceDescription(lang),
-                  ),
-                  const _ItemDivider(),
-                  _SwitchTile(
-                    label: 'シャッフル後に読み上げ'.tr(lang),
-                    value: settings.shakeAutoSpeak,
-                    onChanged: (v) => settings.shakeAutoSpeak = v,
-                  ),
-                ]),
-                _noteText(
-                  speechReader.isUsingHighQualityVoice
-                      ? '使用中の声_高品質'.trFmt(lang, [
-                          speechReader.activeVoiceDescription(lang),
-                        ])
-                      : Platform.isIOS
-                          ? 'より自然な声: iPhone の設定 → アクセシビリティ → リーダーと読み上げ → 声 → 日本語 → Kyoko または Otoya の高品質版をダウンロード（iOS によっては「読み上げコンテンツ」と表示）'
-                              .tr(lang)
-                          : '声質_Android説明'.tr(lang),
-                ),
-                if (!speechReader.ttsAvailable)
-                  _TtsUnavailableNotice(
-                    text: (Platform.isIOS ? '読み上げ_音声なし_iOS' : '読み上げ_音声なし')
-                        .tr(lang),
-                    onTap: () => NativeTtsPlatform.openSettings(),
-                  ),
-
-                _sectionHeaderWithIcon(
-                  Icons.chat_bubble_outline,
-                  'お題'.tr(lang),
-                ),
-                _card([
-                  _SwitchTile(
-                    label: '内蔵のお題を使う'.tr(lang),
-                    value: settings.useBuiltInTopics,
-                    onChanged: (v) => settings.useBuiltInTopics = v,
-                  ),
-                ]),
-                _noteText('内蔵のお題を使う_説明'.tr(lang)),
-
-                _sectionHeader('模擬試験'.tr(lang)),
-                _card([
-                  _SwitchTile(
-                    label: '模擬試験中に質問を表示'.tr(lang),
-                    value: settings.mockExamShowQuestion,
-                    onChanged: (v) => settings.mockExamShowQuestion = v,
-                  ),
-                ]),
-                _noteText('模擬試験中に質問を表示_説明'.tr(lang)),
-
-                _sectionHeaderWithIcon(
-                  Icons.notifications_none,
-                  'タイマー設定'.tr(lang),
-                ),
-                _card([
-                  _NavigationTile(
-                    label: 'タイマー音'.tr(lang),
-                    value: TimerCompletionSoundCatalog.displayName(
-                      settings.completionSound,
-                      lang,
+                const SizedBox(height: 20),
+                _group('読み上げとお題', Icons.volume_up, Colors.orange, [
+                  _inner([
+                    _VoiceGenderTile(
+                      label: '声質'.tr(lang),
+                      currentValue: settings.speechVoiceGender.tr(lang),
+                      onTap: () => _showGenderPicker(context, lang),
                     ),
-                    onTap: () => Navigator.push(
-                      context,
-                      fullscreenDismissRoute<void>(
-                        builder: (_) => TimerSoundPickerView(
-                          settings: settings,
-                          timerAlert: timerAlert,
-                          languageCode: lang,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const _ItemDivider(),
-                  _SwitchTile(
-                    label: 'フェーズ切替音'.tr(lang),
-                    value: settings.phaseTransitionSoundEnabled,
-                    onChanged: (v) => settings.phaseTransitionSoundEnabled = v,
-                  ),
-                  const _ItemDivider(),
-                  _SwitchTile(
-                    label: '終了・切替のバイブレーション'.tr(lang),
-                    value: settings.vibrationEnabled,
-                    onChanged: (v) => settings.vibrationEnabled = v,
-                  ),
-                  const _ItemDivider(),
-                  _SwitchTile(
-                    label: '準備15秒のバイブレーション'.tr(lang),
-                    value: settings.preparationTickVibrationEnabled,
-                    onChanged: (v) =>
-                        settings.preparationTickVibrationEnabled = v,
-                  ),
-                  const _ItemDivider(),
-                  _IntervalTile(
-                    label: 'インターバル'.tr(lang),
-                    currentSeconds: settings.autoAdvanceInterval,
-                    languageCode: lang,
-                    onTap: () => _showIntervalPicker(context, lang),
-                  ),
-                ]),
-                _noteText('タイマー音_バイブレーション説明'.tr(lang)),
-                _noteText('インターバル_説明'.tr(lang)),
-
-                _sectionHeader('採点履歴'.tr(lang)),
-                _card([
-                  _SwitchTile(
-                    label: '採点履歴を保持する'.tr(lang),
-                    value: settings.scoringHistoryEnabled,
-                    onChanged: (v) => settings.scoringHistoryEnabled = v,
-                  ),
-                  const _ItemDivider(),
-                  _ResetHistoryTile(
-                    lang: lang,
-                    enabled: _hasHistory,
-                    onReset: () {
-                      widget.onResetScoringHistory();
-                      setState(() => _hasHistory = false);
-                    },
-                  ),
-                ]),
-                _noteText('採点履歴_説明'.tr(lang)),
-
-                _sectionHeader('サポート'.tr(lang)),
-                _card([
-                  _NavigationTile(
-                    label: _isSendingLog
-                        ? 'ログ_送信中'.tr(lang)
-                        : 'クラッシュログを送信'.tr(lang),
-                    onTap:
-                        _isSendingLog ? () {} : () => _showLogSendDialog(lang),
-                  ),
-                  const _ItemDivider(),
-                  InkWell(
-                    onTap: () => _clearLog(lang),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
-                      child: Text(
-                        'ログをクリア'.tr(lang),
-                        style: const TextStyle(
-                          fontSize: 17,
-                          color: AppColors.red,
-                        ),
-                      ),
-                    ),
-                  ),
-                ]),
-                _noteText('クラッシュログ送信_説明'.tr(lang)),
-
-                _sectionHeader('プライバシー'.tr(lang)),
-                _card([
-                  _NavigationTile(
-                    label: '同意とデータ削除'.tr(lang),
-                    onTap: () => Navigator.push(
-                      context,
-                      fullscreenDismissRoute<void>(
-                        builder: (_) => PrivacyView(
-                          settings: settings,
-                          preferences: settings.preferences,
-                        ),
-                      ),
-                    ),
-                  ),
-                ]),
-                _noteText('help.privacy.body'.tr(lang)),
-
-                if (showDeveloperTools) ...[
-                  _sectionHeader('開発者向け'.tr(lang)),
-                  _card([
-                    _calibrationBiasTile(settings, lang),
                     const _ItemDivider(),
+                    _SpeechRateTile(
+                      label: '読み上げ速度'.tr(lang),
+                      slowLabel: 'ゆっくり'.tr(lang),
+                      fastLabel: 'はやい'.tr(lang),
+                      rate: settings.speechRate,
+                      onChanged: (v) => settings.speechRate = v,
+                    ),
+                    const _ItemDivider(),
+                    _ValueTile(
+                      label: '使用中の声'.tr(lang),
+                      value: speechReader.activeVoiceDescription(lang),
+                    ),
+                    const _ItemDivider(),
+                    _SwitchTile(
+                      label: 'シャッフル後に読み上げ'.tr(lang),
+                      value: settings.shakeAutoSpeak,
+                      onChanged: (v) => settings.shakeAutoSpeak = v,
+                    ),
+                  ]),
+                  _noteText(
+                    speechReader.isUsingHighQualityVoice
+                        ? '使用中の声_高品質'.trFmt(lang, [
+                            speechReader.activeVoiceDescription(lang),
+                          ])
+                        : Platform.isIOS
+                            ? 'より自然な声: iPhone の設定 → アクセシビリティ → リーダーと読み上げ → 声 → 日本語 → Kyoko または Otoya の高品質版をダウンロード（iOS によっては「読み上げコンテンツ」と表示）'
+                                .tr(lang)
+                            : '声質_Android説明'.tr(lang),
+                  ),
+                  if (!speechReader.ttsAvailable)
+                    _TtsUnavailableNotice(
+                      text: (Platform.isIOS ? '読み上げ_音声なし_iOS' : '読み上げ_音声なし')
+                          .tr(lang),
+                      onTap: () => NativeTtsPlatform.openSettings(),
+                    ),
+                  _inner([
+                    _SwitchTile(
+                      label: '内蔵のお題を使う'.tr(lang),
+                      value: settings.useBuiltInTopics,
+                      onChanged: (v) => settings.useBuiltInTopics = v,
+                    ),
+                  ]),
+                  _noteText('内蔵のお題を使う_説明'.tr(lang)),
+                ]),
+                _group('練習とタイマー', Icons.timer_outlined, AppColors.blue, [
+                  _inner([
+                    _SwitchTile(
+                      label: '模擬試験中に質問を表示'.tr(lang),
+                      value: settings.mockExamShowQuestion,
+                      onChanged: (v) => settings.mockExamShowQuestion = v,
+                    ),
+                  ]),
+                  _noteText('模擬試験中に質問を表示_説明'.tr(lang)),
+                  _inner([
                     _NavigationTile(
-                      label: '音声認識ログ'.tr(lang),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          fullscreenDismissRoute<void>(
-                            builder: (_) => SpeechRecognitionDebugLogView(
-                              languageCode: lang,
-                            ),
+                      label: 'タイマー音'.tr(lang),
+                      value: TimerCompletionSoundCatalog.displayName(
+                        settings.completionSound,
+                        lang,
+                      ),
+                      onTap: () => Navigator.push(
+                        context,
+                        fullscreenDismissRoute<void>(
+                          builder: (_) => TimerSoundPickerView(
+                            settings: settings,
+                            timerAlert: timerAlert,
+                            languageCode: lang,
                           ),
-                        );
+                        ),
+                      ),
+                    ),
+                    const _ItemDivider(),
+                    _SwitchTile(
+                      label: 'フェーズ切替音'.tr(lang),
+                      value: settings.phaseTransitionSoundEnabled,
+                      onChanged: (v) =>
+                          settings.phaseTransitionSoundEnabled = v,
+                    ),
+                    const _ItemDivider(),
+                    _SwitchTile(
+                      label: '終了・切替のバイブレーション'.tr(lang),
+                      value: settings.vibrationEnabled,
+                      onChanged: (v) => settings.vibrationEnabled = v,
+                    ),
+                    const _ItemDivider(),
+                    _SwitchTile(
+                      label: '準備15秒のバイブレーション'.tr(lang),
+                      value: settings.preparationTickVibrationEnabled,
+                      onChanged: (v) =>
+                          settings.preparationTickVibrationEnabled = v,
+                    ),
+                    const _ItemDivider(),
+                    _IntervalTile(
+                      label: 'インターバル'.tr(lang),
+                      currentSeconds: settings.autoAdvanceInterval,
+                      languageCode: lang,
+                      onTap: () => _showIntervalPicker(context, lang),
+                    ),
+                  ]),
+                  _noteText('タイマー音_バイブレーション説明'.tr(lang)),
+                  _noteText('インターバル_説明'.tr(lang)),
+                ]),
+                _group('採点履歴', Icons.assessment_outlined, AppColors.green, [
+                  _inner([
+                    _SwitchTile(
+                      label: '採点履歴を保持する'.tr(lang),
+                      value: settings.scoringHistoryEnabled,
+                      onChanged: (v) => settings.scoringHistoryEnabled = v,
+                    ),
+                    const _ItemDivider(),
+                    _ResetHistoryTile(
+                      lang: lang,
+                      enabled: _hasHistory,
+                      onReset: () {
+                        widget.onResetScoringHistory();
+                        setState(() => _hasHistory = false);
                       },
                     ),
                   ]),
-                  _noteText('音声認識ログ_設定説明'.tr(lang)),
-                ],
+                  _noteText('採点履歴_説明'.tr(lang)),
+                ]),
+                _group('サポート', Icons.support_agent_rounded, Colors.purple, [
+                  _inner([
+                    _NavigationTile(
+                      label: _isSendingLog
+                          ? 'ログ_送信中'.tr(lang)
+                          : 'クラッシュログを送信'.tr(lang),
+                      onTap: _isSendingLog
+                          ? () {}
+                          : () => _showLogSendDialog(lang),
+                    ),
+                    const _ItemDivider(),
+                    InkWell(
+                      onTap: () => _clearLog(lang),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
+                        child: Text(
+                          'ログをクリア'.tr(lang),
+                          style: const TextStyle(
+                            fontSize: 17,
+                            color: AppColors.red,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+                  _noteText('クラッシュログ送信_説明'.tr(lang)),
+                ]),
+                if (showDeveloperTools)
+                  _group('開発者向け', Icons.code_rounded, Colors.grey, [
+                    _inner([
+                      _calibrationBiasTile(settings, lang),
+                      const _ItemDivider(),
+                      _NavigationTile(
+                        label: '音声認識ログ'.tr(lang),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            fullscreenDismissRoute<void>(
+                              builder: (_) => SpeechRecognitionDebugLogView(
+                                languageCode: lang,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ]),
+                    _noteText('音声認識ログ_設定説明'.tr(lang)),
+                  ]),
 
                 GestureDetector(
                   onTap: _onDevAreaTap,
@@ -447,6 +426,33 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
+  Widget _inner(List<Widget> children) => Column(children: children);
+
+  Widget _group(
+    String titleKey,
+    IconData icon,
+    Color accent,
+    List<Widget> children,
+  ) {
+    return Padding(
+      key: ValueKey('settings-group-$titleKey'),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+      child: WashabeExpandCard(
+        title: titleKey.tr(settings.language),
+        icon: icon,
+        accent: accent,
+        open: _openGroups.contains(titleKey),
+        onToggle: () => setState(() {
+          if (!_openGroups.remove(titleKey)) _openGroups.add(titleKey);
+        }),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [...children, const SizedBox(height: 12)],
+        ),
+      ),
+    );
+  }
+
   Widget _sectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 6),
@@ -457,26 +463,6 @@ class _SettingsViewState extends State<SettingsView> {
           fontSize: 13,
           fontWeight: FontWeight.w400,
         ),
-      ),
-    );
-  }
-
-  Widget _sectionHeaderWithIcon(IconData icon, String title) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 6),
-      child: Row(
-        children: [
-          Icon(icon, size: 15, color: AppColors.labelGray),
-          const SizedBox(width: 4),
-          Text(
-            title,
-            style: const TextStyle(
-              color: AppColors.labelGray,
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
       ),
     );
   }

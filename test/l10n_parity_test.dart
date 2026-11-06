@@ -33,8 +33,8 @@ void main() {
     const scoringKeys = [
       '採点ON_ヒント',
       '採点OFF_ヒント',
-      'help.scoring.title',
-      'help.scoring.body',
+      'help.score.title',
+      'help.score.1',
       'JSST 1〜2',
       '参考サンプル_Level4',
       '枠あたりの発話量',

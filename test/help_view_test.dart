@@ -2,13 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher_platform_interface/link.dart';
-import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
 import 'package:osm_washabe/l10n/app_strings.dart';
 import 'package:osm_washabe/notifiers/app_settings.dart';
 import 'package:osm_washabe/services/app_preferences.dart';
 import 'package:osm_washabe/views/help/help_view.dart';
+import 'package:osm_washabe/views/privacy/privacy_view.dart';
+
+const _sections = {
+  'one': 3,
+  'prep': 3,
+  'mock': 2,
+  'read': 1,
+  'import': 2,
+  'score': 3,
+  'last': 1,
+  'voice': 2,
+  'crash': 1,
+};
 
 void main() {
   late AppSettingsNotifier settings;
@@ -26,68 +37,62 @@ void main() {
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
     settings = AppSettingsNotifier()..bind(await AppPreferences.load());
+    settings.language = 'ja';
   });
 
-  test('操作マニュアルURLは言語ごとに固定のpreview先を返す', () {
-    expect(
-      HelpView.userManualUrlFor('ja'),
-      'https://docs.google.com/presentation/d/'
-      '${HelpView.userManualPresentationIdJa}/preview',
-    );
-    expect(
-      HelpView.userManualUrlFor('en'),
-      'https://docs.google.com/presentation/d/'
-      '${HelpView.userManualPresentationIdEn}/preview',
-    );
-    expect(
-      HelpView.userManualUrlFor('vi'),
-      'https://docs.google.com/presentation/d/'
-      '${HelpView.userManualPresentationIdVi}/preview',
-    );
-    expect(
-      HelpView.userManualUrlFor('fr'),
-      HelpView.userManualUrlFor('vi'),
-    );
-  });
-
-  testWidgets('操作マニュアルをタップすると表示言語のGoogleスライドが開く', (tester) async {
-    final originalUrlLauncher = UrlLauncherPlatform.instance;
-    final fakeUrlLauncher = _FakeUrlLauncherPlatform();
-    UrlLauncherPlatform.instance = fakeUrlLauncher;
-    addTearDown(() => UrlLauncherPlatform.instance = originalUrlLauncher);
-
-    settings.language = 'en';
-
-    await tester.pumpWidget(
-      MaterialApp(home: HelpView(settings: settings)),
-    );
+  Future<void> pumpHelp(WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1200, 9000);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(MaterialApp(home: HelpView(settings: settings)));
     await tester.pumpAndSettle();
-
-    expect(
-      find.text('操作マニュアル'.tr(settings.language)),
-      findsOneWidget,
-    );
-
-    await tester.tap(find.byKey(const Key('help_user_manual')));
-    await tester.pumpAndSettle();
-
-    expect(fakeUrlLauncher.launchedUrls, [HelpView.userManualUrlFor('en')]);
-    expect(HelpView.userManualUrlFor('en'), endsWith('/preview'));
-  });
-}
-
-class _FakeUrlLauncherPlatform extends UrlLauncherPlatform {
-  final List<String> launchedUrls = [];
-
-  @override
-  LinkDelegate? get linkDelegate => null;
-
-  @override
-  Future<bool> canLaunch(String url) async => true;
-
-  @override
-  Future<bool> launchUrl(String url, LaunchOptions options) async {
-    launchedUrls.add(url);
-    return true;
   }
+
+  for (final lang in ['ja', 'en', 'vi']) {
+    test('$lang: 各節の文言があり、手順は 3 つまでで短い', () {
+      final japanese = RegExp(r'[\u3040-\u30ff\u4e00-\u9fff]');
+      for (final MapEntry(key: id, value: count) in _sections.entries) {
+        expect(count, lessThanOrEqualTo(3));
+        for (final key in [
+          'help.$id.title',
+          for (var i = 1; i <= count; i++) 'help.$id.$i',
+        ]) {
+          final text = key.tr(lang);
+          expect(text, isNot(key), reason: key);
+          expect(text.length, lessThanOrEqualTo(80), reason: key);
+          if (lang != 'ja') {
+            expect(japanese.hasMatch(text), isFalse, reason: key);
+          }
+        }
+      }
+    });
+  }
+
+  testWidgets('操作マニュアルは無く、節は閉じて始まり、開くと番号順の手順が出る', (tester) async {
+    await pumpHelp(tester);
+    expect(find.byIcon(Icons.menu_book_outlined), findsNothing);
+    expect(find.text('help.one.1'.tr('ja')), findsNothing);
+
+    final card = find.byKey(const ValueKey('help-section-one'));
+    await tester.tap(find.text('help.one.title'.tr('ja')));
+    await tester.pumpAndSettle();
+    for (var i = 1; i <= 3; i++) {
+      expect(
+        find.descendant(of: card, matching: find.text('$i')),
+        findsOneWidget,
+      );
+      expect(find.text('help.one.$i'.tr('ja')), findsOneWidget);
+    }
+
+    await tester.tap(find.text('help.one.title'.tr('ja')));
+    await tester.pumpAndSettle();
+    expect(find.text('help.one.1'.tr('ja')), findsNothing);
+  });
+
+  testWidgets('プライバシーはヘルプから開く', (tester) async {
+    await pumpHelp(tester);
+    await tester.tap(find.byKey(const ValueKey('help-privacy')));
+    await tester.pumpAndSettle();
+    expect(find.byType(PrivacyView), findsOneWidget);
+  });
 }
