@@ -16,6 +16,34 @@ abstract final class AppStrings {
   };
 
   static const _ja = <String, String>{
+    'help.one.title': '1問ずつ練習する',
+    'help.one.1': '「1問ずつ」で秒数を選ぶ',
+    'help.one.2': '「お題を引く」をタップ',
+    'help.one.3': '▶で開始、⏸で一時停止、↺でリセット',
+    'help.prep.title': '15秒準備してから話す',
+    'help.prep.1': '「15＋60秒」を選ぶ',
+    'help.prep.2': '話題を選ぶ',
+    'help.prep.3': '▶で準備15秒、続けて発話60秒',
+    'help.mock.title': '模擬試験を受ける',
+    'help.mock.1': '「模擬試験」をタップ',
+    'help.mock.2': '10問連続。タイマーが終わると次へ',
+    'help.read.title': 'お題を聞く',
+    'help.read.1': 'スピーカー（読み上げ）をタップ',
+    'help.import.title': 'お題を取り込む',
+    'help.import.1': '…（その他）の「お題の取り込み」をタップ',
+    'help.import.2': 'AI の回答をコピーして取り込む',
+    'help.score.title': '話した内容を採点する',
+    'help.score.1': '左端の採点アイコンをタップしてオン',
+    'help.score.2': '話し終えると結果が開く',
+    'help.score.3': '模擬試験では使えない',
+    'help.last.title': '前の採点結果を見る',
+    'help.last.1': '採点がオンのとき、採点アイコンを長押し',
+    'help.voice.title': '声を自然にしたいとき',
+    'help.voice.1': 'iPhone の設定で「声」と検索',
+    'help.voice.2': '日本語 → Kyoko か Otoya の高品質版をダウンロード',
+    'help.crash.title': '動きがおかしいとき',
+    'help.crash.1': '設定の「クラッシュログを送信」をタップ',
+    '練習とタイマー': '練習とタイマー',
     '設定': '設定',
     '言語': '言語',
     'アプリの表示言語を変更できます。': 'アプリの表示言語を変更できます。',
@@ -128,45 +156,11 @@ abstract final class AppStrings {
     '聞き返し中': '聞き返し中',
     'その他': 'その他',
     'ヘルプ': 'ヘルプ',
-    '操作マニュアル': '操作マニュアル',
-    '図解で画面ごとの使い方を見る': '図解で画面ごとの使い方を見る',
-    'ヘルプ紹介文':
-        '日本語スピーチの練習アプリです。1問ずつの練習に加え、10問連続出題の模擬試験にも対応しています。採点（試験版）や Chrome AI でのお題取り込みにも対応しています。',
-    '基本操作': '基本操作',
+    'ヘルプ紹介文': '日本語スピーチを練習するアプリです。',
     '読み上げとお題': '読み上げとお題',
-    '各種設定': '各種設定',
     'English': 'English',
     '日本語': '日本語',
     'Tiếng Việt': 'Tiếng Việt',
-    'help.normal.title': '1問ずつ（45秒・60秒）',
-    'help.normal.body':
-        '「1問ずつ」でタイマーボタンを選ぶと、問題が自動で切り替わります。\n\n● 45秒 ─ 分野を選んでお題を引き、45秒スピーチ（標準の練習）\n● 60秒 ─ 同じく60秒スピーチ（より長く話したい場合）',
-    'help.situation.title': '1問ずつ（15＋60秒）',
-    'help.situation.body':
-        '「15＋60秒」モードでは、日常の身近な話題・ビジネスシーン・シチュエーション・ランダムの4種類から話題を選べます。▶を押すと準備フェーズ（15秒）が始まり、アナウンス後に発話フェーズ（60秒）へ自動で切り替わります。',
-    'help.mock.title': '模擬試験',
-    'help.mock.body':
-        '「模擬試験」では10問が連続で出題されます（通常45秒×7、通常60秒×1、通常15+60秒×1、敬語シチュエーション×1）。タイマー終了後、自動的に次へ進みます。',
-    'help.timer.title': 'タイマー',
-    'help.timer.body': '▶︎ で計測開始、⏸ で一時停止、↺ でリセットです。終了時に音とバイブレーションが鳴ります。',
-    'help.scoring.section': '採点（試験版）',
-    'help.scoring.title': '採点機能',
-    'help.scoring.body':
-        '「1問ずつ」モードの左端にある採点アイコンでON/OFFできます。ONのとき、発話終了後に結果シートが開きます。アイコンを長押しすると、直前の結果をいつでも見返せます（まだ結果がないときは通知が出ます）。模擬試験では使えません。\n\nJSSTの「待遇表現」「テキストタイプ」「時間の使い方」の3軸を近似した参考値です。公式のJSST採点（文法・発音など）とは異なります。45秒・60秒・15+60秒（発話60秒）に対応し、level 4 / level 9 の参考サンプルとも比較できます。',
-    'help.speech.title': '読み上げ',
-    'help.speech.body':
-        'スピーカーアイコンでお題やシチュエーションを音声で確認できます。設定で声質と速度を変更できます。より自然な声は iPhone の設定で「声」と検索 → 日本語 → Kyoko / Otoya の高品質版をダウンロード（iOS 26 以降は「リーダーと読み上げ」内）。',
-    'help.import.title': 'お題の取り込み',
-    'help.import.body':
-        '… メニューから Chrome AI 用プロンプトを開き、AI の回答をコピーして取り込めます。日常の身近な話題・ビジネスシーン・シチュエーションに自動振り分けされます。',
-    'help.settings.language.title': '言語',
-    'help.settings.language.body': '設定で English / 日本語 / Tiếng Việt を選べます。',
-    'help.privacy.title': 'プライバシー',
-    'help.privacy.body': '録音・音声認識の同意確認や全データ削除は、設定の「プライバシー」から行えます。',
-    'help.settings.timer.title': 'タイマー設定',
-    'help.settings.timer.body': '設定で終了音・バイブレーション・インターバルを変更できます。',
-    'help.settings.history.title': '採点履歴',
-    'help.settings.history.body': '設定で直近の採点結果の保持やリセットができます。',
     'クリップボードに AI の回答が見つかりませんでした。Chrome で回答を長押し→すべて選択→コピー してから再度お試しください。':
         'クリップボードに AI の回答が見つかりませんでした。Chrome で回答を長押し→すべて選択→コピー してから再度お試しください。',
     'まず「クリップボードから読み込む」で AI の回答を貼り付けてください。':
@@ -378,6 +372,34 @@ abstract final class AppStrings {
   };
 
   static const _en = <String, String>{
+    'help.one.title': 'Practice one question',
+    'help.one.1': 'In "One at a Time", choose the seconds',
+    'help.one.2': 'Tap "Draw topic"',
+    'help.one.3': '▶ starts, ⏸ pauses, ↺ resets',
+    'help.prep.title': 'Prepare 15 seconds, then speak',
+    'help.prep.1': 'Choose "15+60 sec"',
+    'help.prep.2': 'Choose a topic',
+    'help.prep.3': '▶ starts 15 seconds to prepare, then 60 to speak',
+    'help.mock.title': 'Take a mock exam',
+    'help.mock.1': 'Tap "Mock Exam"',
+    'help.mock.2': '10 questions in a row. The next starts when the timer ends',
+    'help.read.title': 'Listen to the topic',
+    'help.read.1': 'Tap the speaker (Read Aloud)',
+    'help.import.title': 'Import topics',
+    'help.import.1': 'In … (More), tap "Import Topics"',
+    'help.import.2': 'Copy the AI answer and import it',
+    'help.score.title': 'Score your speech',
+    'help.score.1': 'Tap the scoring icon at the far left to turn it on',
+    'help.score.2': 'The result opens when you finish',
+    'help.score.3': 'Not available in the mock exam',
+    'help.last.title': 'See the last score',
+    'help.last.1': 'With scoring on, long-press the scoring icon',
+    'help.voice.title': 'When you want a more natural voice',
+    'help.voice.1': 'Search for "Voices" in iPhone Settings',
+    'help.voice.2': 'Japanese → download a higher-quality Kyoko or Otoya',
+    'help.crash.title': 'When something goes wrong',
+    'help.crash.1': 'In Settings, tap "Send Crash Log"',
+    '練習とタイマー': 'Practice and timer',
     '設定': 'Settings',
     '言語': 'Language',
     'アプリの表示言語を変更できます。': 'You can change the app display language.',
@@ -490,50 +512,11 @@ abstract final class AppStrings {
     '聞き返し中': 'Repeating…',
     'その他': 'More',
     'ヘルプ': 'Help',
-    '操作マニュアル': 'User manual',
-    '図解で画面ごとの使い方を見る': 'Illustrated guide for each screen',
-    'ヘルプ紹介文':
-        'Japanese speech practice with mock exams, experimental scoring, and topic import via Chrome AI.',
-    '基本操作': 'Basics',
+    'ヘルプ紹介文': 'An app for practicing Japanese speech.',
     '読み上げとお題': 'Speech & Topics',
-    '各種設定': 'Settings',
     'English': 'English',
     '日本語': '日本語',
     'Tiếng Việt': 'Tiếng Việt',
-    'help.normal.title': 'One at a Time (45 sec / 60 sec)',
-    'help.normal.body':
-        'In "One at a Time", selecting a timer button automatically draws a matching topic.\n\n● 45 sec — pick a category, draw a topic, and speak for 45 seconds (standard)\n● 60 sec — same flow, speak for 60 seconds (longer practice)',
-    'help.situation.title': 'One at a Time (15+60 sec)',
-    'help.situation.body':
-        'In 15+60 sec mode, you can choose from four topic categories: Daily Topics, Business Scene, Situation, and Random. Tap ▶ to start the Preparation phase (15 sec), then after an announcement the Speaking phase (60 sec) begins automatically.',
-    'help.mock.title': 'Mock Exam',
-    'help.mock.body':
-        'Mock Exam runs all 10 questions in sequence (7×45 sec, 1×60 sec, 1×15+60 sec, 1 keigo situation). The app advances automatically when time is up.',
-    'help.timer.title': 'Timer',
-    'help.timer.body':
-        'Use ▶ to start, ⏸ to pause, and ↺ to reset. A sound and vibration play when time is up.',
-    'help.scoring.section': 'Scoring (Experimental)',
-    'help.scoring.title': 'Scoring',
-    'help.scoring.body':
-        'In "One at a Time" mode, use the scoring icon at the far left of the session bar to turn scoring on or off. When on, the result sheet opens after you finish speaking. Long-press the icon to review the last result anytime (a notice appears if there is none yet). Not available in Mock Exam.\n\nResults approximate three JSST axes: honorific usage, sentence complexity, and time usage. This is not official JSST scoring (grammar, pronunciation, etc.). Supports 45 sec, 60 sec, and 15+60 sec (60 sec speaking phase), with level 4 / level 9 reference samples.',
-    'help.speech.title': 'Read Aloud',
-    'help.speech.body':
-        'Tap the speaker icon to hear the topic or situation. Change voice and speed in Settings. For a natural voice, search "Voices" in iPhone Settings → Japanese → download Enhanced Kyoko or Otoya (iOS 26+: under Reader & Spoken Content).',
-    'help.import.title': 'Import Topics',
-    'help.import.body':
-        'Open the … menu to launch Chrome AI with the prompt, copy the answer, and import. Topics are sorted into Daily Topics, Business Scene, and Situation.',
-    'help.settings.language.title': 'Language',
-    'help.settings.language.body':
-        'Choose English, Japanese, or Vietnamese in Settings.',
-    'help.privacy.title': 'Privacy',
-    'help.privacy.body':
-        'Review speech-recognition consent or delete all data from Settings → Privacy.',
-    'help.settings.timer.title': 'Timer settings',
-    'help.settings.timer.body':
-        'Change completion sound, vibration, and interval in Settings.',
-    'help.settings.history.title': 'Scoring history',
-    'help.settings.history.body':
-        'Keep or reset recent scoring results in Settings.',
     'クリップボードに AI の回答が見つかりませんでした。Chrome で回答を長押し→すべて選択→コピー してから再度お試しください。':
         'No AI answer on clipboard. Long-press in Chrome → Select All → Copy.',
     'まず「クリップボードから読み込む」で AI の回答を貼り付けてください。':
@@ -760,6 +743,34 @@ abstract final class AppStrings {
   };
 
   static const _vi = <String, String>{
+    'help.one.title': 'Luyện từng câu',
+    'help.one.1': 'Trong "Từng câu", chọn số giây',
+    'help.one.2': 'Chạm "Rút chủ đề"',
+    'help.one.3': '▶ bắt đầu, ⏸ tạm dừng, ↺ đặt lại',
+    'help.prep.title': 'Chuẩn bị 15 giây rồi nói',
+    'help.prep.1': 'Chọn "15+60 giây"',
+    'help.prep.2': 'Chọn chủ đề',
+    'help.prep.3': '▶ bắt đầu 15 giây chuẩn bị, rồi 60 giây nói',
+    'help.mock.title': 'Làm bài thi thử',
+    'help.mock.1': 'Chạm "Thi thử"',
+    'help.mock.2': '10 câu liên tiếp. Hết giờ sẽ sang câu tiếp',
+    'help.read.title': 'Nghe đề tài',
+    'help.read.1': 'Chạm loa (Đọc to)',
+    'help.import.title': 'Nhập đề tài',
+    'help.import.1': 'Trong … (Khác), chạm "Nhập chủ đề"',
+    'help.import.2': 'Sao chép câu trả lời AI rồi nhập vào',
+    'help.score.title': 'Chấm điểm bài nói',
+    'help.score.1': 'Chạm biểu tượng chấm điểm ở bên trái để bật',
+    'help.score.2': 'Nói xong, kết quả sẽ mở ra',
+    'help.score.3': 'Không dùng được khi thi thử',
+    'help.last.title': 'Xem kết quả trước',
+    'help.last.1': 'Khi bật chấm điểm, nhấn giữ biểu tượng chấm điểm',
+    'help.voice.title': 'Khi muốn giọng tự nhiên hơn',
+    'help.voice.1': 'Tìm "Giọng nói" trong Cài đặt iPhone',
+    'help.voice.2': 'Tiếng Nhật → tải Kyoko hoặc Otoya chất lượng cao',
+    'help.crash.title': 'Khi ứng dụng gặp lỗi',
+    'help.crash.1': 'Trong Cài đặt, chạm "Gửi nhật ký sự cố"',
+    '練習とタイマー': 'Luyện tập và hẹn giờ',
     '設定': 'Cài đặt',
     '言語': 'Ngôn ngữ',
     'アプリの表示言語を変更できます。': 'Bạn có thể đổi ngôn ngữ hiển thị.',
@@ -871,49 +882,11 @@ abstract final class AppStrings {
     '聞き返し中': 'Đang nghe lại…',
     'その他': 'Khác',
     'ヘルプ': 'Trợ giúp',
-    '操作マニュアル': 'Hướng dẫn sử dụng',
-    '図解で画面ごとの使い方を見る': 'Xem cách dùng từng màn hình bằng hình',
-    'ヘルプ紹介文':
-        'Ứng dụng luyện nói tiếng Nhật với thi thử, chấm điểm thử nghiệm và nhập chủ đề qua Chrome AI.',
-    '基本操作': 'Cơ bản',
+    'ヘルプ紹介文': 'Ứng dụng luyện nói tiếng Nhật.',
     '読み上げとお題': 'Đọc to & Chủ đề',
-    '各種設定': 'Cài đặt',
     'English': 'English',
     '日本語': '日本語',
     'Tiếng Việt': 'Tiếng Việt',
-    'help.normal.title': 'Từng câu (45 giây / 60 giây)',
-    'help.normal.body':
-        'Trong "Từng câu", chọn nút hẹn giờ sẽ tự động rút câu hỏi phù hợp.\n\n● 45 giây ─ chọn lĩnh vực, rút chủ đề, nói 45 giây (tiêu chuẩn)\n● 60 giây ─ tương tự, nói 60 giây (luyện tập dài hơn)',
-    'help.situation.title': 'Từng câu (15+60 giây)',
-    'help.situation.body':
-        'Trong chế độ 15+60 giây, bạn có thể chọn từ 4 loại chủ đề: Chủ đề hàng ngày, Tình huống công việc, Tình huống và Ngẫu nhiên. Nhấn ▶ để bắt đầu giai đoạn Chuẩn bị (15 giây), sau đó tự động chuyển sang giai đoạn Phát biểu (60 giây).',
-    'help.mock.title': 'Thi thử',
-    'help.mock.body':
-        'Thi thử chạy liên tiếp 10 câu (7×45 giây, 1×60 giây, 1×15+60 giây, 1 tình huống kính ngữ). Hết giờ sẽ tự chuyển câu tiếp theo.',
-    'help.timer.title': 'Hẹn giờ',
-    'help.timer.body':
-        'Dùng ▶ để bắt đầu, ⏸ để tạm dừng và ↺ để đặt lại. Khi hết giờ sẽ có âm thanh và rung.',
-    'help.scoring.section': 'Chấm điểm (Thử nghiệm)',
-    'help.scoring.title': 'Chấm điểm',
-    'help.scoring.body':
-        'Trong chế độ "Từng câu", dùng biểu tượng chấm điểm ở ngoài cùng bên trái thanh phiên để bật/tắt. Khi bật, bảng kết quả mở sau khi nói xong. Giữ biểu tượng để xem lại kết quả gần nhất (sẽ thông báo nếu chưa có). Không dùng được trong Thi thử.\n\nKết quả ước tính 3 tiêu chí JSST: kính ngữ, độ phức tạp câu và cách dùng thời gian. Không phải điểm JSST chính thức (ngữ pháp, phát âm, v.v.). Hỗ trợ 45 giây, 60 giây và 15+60 giây (giai đoạn nói 60 giây), có mẫu tham khảo cấp 4 / cấp 9.',
-    'help.speech.title': 'Đọc to',
-    'help.speech.body':
-        'Nhấn biểu tượng loa để nghe chủ đề hoặc tình huống. Đổi giọng và tốc độ trong Cài đặt. Giọng tự nhiên: tìm "Giọng" trong Cài đặt iPhone → Tiếng Nhật → tải Kyoko/Otoya bản Nâng cao (iOS 26+: trong Trình đọc & Nội dung đọc).',
-    'help.import.title': 'Nhập chủ đề',
-    'help.import.body':
-        'Mở menu … để mở Chrome AI bằng prompt, sao chép câu trả lời rồi nhập. Chủ đề được phân vào Chủ đề hàng ngày, Tình huống công việc và Tình huống.',
-    'help.settings.language.title': 'Ngôn ngữ',
-    'help.settings.language.body': 'Chọn English, 日本語 hoặc Tiếng Việt.',
-    'help.privacy.title': 'Quyền riêng tư',
-    'help.privacy.body':
-        'Xem lại sự đồng ý nhận dạng giọng nói hoặc xóa toàn bộ dữ liệu trong Cài đặt → Quyền riêng tư.',
-    'help.settings.timer.title': 'Cài đặt hẹn giờ',
-    'help.settings.timer.body':
-        'Đổi âm kết thúc, rung và khoảng chờ trong Cài đặt.',
-    'help.settings.history.title': 'Lịch sử chấm điểm',
-    'help.settings.history.body':
-        'Giữ hoặc xóa kết quả chấm gần đây trong Cài đặt.',
     'クリップボードに AI の回答が見つかりませんでした。Chrome で回答を長押し→すべて選択→コピー してから再度お試しください。':
         'Không tìm thấy câu trả lời AI. Nhấn giữ trong Chrome → Chọn tất cả → Sao chép.',
     'まず「クリップボードから読み込む」で AI の回答を貼り付けてください。':
