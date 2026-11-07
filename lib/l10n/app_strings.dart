@@ -16,6 +16,17 @@ abstract final class AppStrings {
   };
 
   static const _ja = <String, String>{
+    '次回から表示しない': '次回から表示しない',
+    'はじめる': 'はじめる',
+    '使い方': '使い方',
+    '使い方_Chrome見出し': 'Chrome の AI モード（お題の取り込み）',
+    '使い方_コピー画像ラベル': 'Chrome AIモードのコピーボタン（赤い矢印と TAP!）',
+    'ホーム画面へ': 'ホーム画面へ',
+    '案内': '案内',
+    'スタートアップ画面': 'スタートアップ画面',
+    '使い方画面': '使い方画面',
+    '使い方_コピー本文':
+        "Chrome の AI モードで答えが出たら、画面の下のほうにあるコピーボタンをタップしてください。下の画像の赤い矢印と TAP! が指している、左端の重なった2つの四角です。\n\nこのボタンを押さずにアプリへ戻ると、取り込めません。コピーできたら、osmWAshabe に戻ってください。",
     'help.one.title': '1問ずつ練習する',
     'help.one.1': '「1問ずつ」で秒数を選ぶ',
     'help.one.2': '「お題を引く」をタップ',
@@ -372,6 +383,17 @@ abstract final class AppStrings {
   };
 
   static const _en = <String, String>{
+    '次回から表示しない': 'Don\'t show again',
+    'はじめる': 'Get started',
+    '使い方': 'How to use',
+    '使い方_Chrome見出し': 'Chrome AI Mode (importing topics)',
+    '使い方_コピー画像ラベル': 'Copy button in Chrome AI Mode (red arrow and TAP!)',
+    'ホーム画面へ': 'Go to Home',
+    '案内': 'Guides',
+    'スタートアップ画面': 'Startup screen',
+    '使い方画面': 'How-to screen',
+    '使い方_コピー本文':
+        "When Chrome's AI Mode shows an answer, tap the Copy button near the bottom of the screen — the leftmost icon of two overlapping squares, marked TAP! with a red arrow.\n\nIf you skip this and return to the app, you can't import. After copying, come back to osmWAshabe.",
     'help.one.title': 'Practice one question',
     'help.one.1': 'In "One at a Time", choose the seconds',
     'help.one.2': 'Tap "Draw topic"',
@@ -743,6 +765,17 @@ abstract final class AppStrings {
   };
 
   static const _vi = <String, String>{
+    '次回から表示しない': 'Không hiện lại',
+    'はじめる': 'Bắt đầu',
+    '使い方': 'Cách dùng',
+    '使い方_Chrome見出し': 'Chrome AI Mode (nhập đề tài)',
+    '使い方_コピー画像ラベル': 'Nút sao chép trong Chrome AI Mode (mũi tên đỏ và TAP!)',
+    'ホーム画面へ': 'Về màn hình chính',
+    '案内': 'Hướng dẫn',
+    'スタートアップ画面': 'Màn hình khởi động',
+    '使い方画面': 'Màn hình cách dùng',
+    '使い方_コピー本文':
+        "Khi AI Mode của Chrome hiện câu trả lời, hãy chạm nút Sao chép ở phía dưới màn hình — biểu tượng ngoài cùng bên trái gồm hai hình vuông chồng lên nhau, có mũi tên đỏ và chữ TAP!.\n\nNếu quay lại ứng dụng mà chưa chạm nút này, bạn sẽ không nhập được. Sau khi sao chép, hãy quay lại osmWAshabe.",
     'help.one.title': 'Luyện từng câu',
     'help.one.1': 'Trong "Từng câu", chọn số giây',
     'help.one.2': 'Chạm "Rút chủ đề"',

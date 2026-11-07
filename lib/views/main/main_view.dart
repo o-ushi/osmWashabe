@@ -480,8 +480,7 @@ class _SessionBar extends StatelessWidget {
         Tooltip(
           message: scoringOn ? '採点ON_ヒント'.tr(lang) : '採点OFF_ヒント'.tr(lang),
           child: Material(
-            color:
-                scoringOn ? _scoringOnFill : appearance.subtleFill(scene, 0.14),
+            color: scoringOn ? _scoringOnFill : Colors.transparent,
             shape: const CircleBorder(),
             elevation: scoringOn ? 2 : 0,
             shadowColor: scoringOn
@@ -526,7 +525,7 @@ class _SessionBar extends StatelessWidget {
           message: 'その他'.tr(lang),
           child: Material(
             key: moreButtonKey,
-            color: appearance.subtleFill(scene, 0.14),
+            color: Colors.transparent,
             shape: const CircleBorder(),
             child: InkWell(
               customBorder: const CircleBorder(),
@@ -553,7 +552,9 @@ class _SessionBar extends StatelessWidget {
       tooltip: label,
       onPressed: onTap,
       expand: true,
-      backgroundColor: appearance.accentChipFill(scene, selected: selected),
+      // osm日日是好日のタブと同じ。普段は背景に直接置き、選択中だけ薄い地を敷く。
+      backgroundColor:
+          selected ? fg.withValues(alpha: 0.15) : Colors.transparent,
       foregroundColor: fg,
     );
   }

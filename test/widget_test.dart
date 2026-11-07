@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:osm_washabe/services/app_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:osm_washabe/main.dart';
@@ -7,7 +8,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
-    SharedPreferences.setMockInitialValues({});
+    SharedPreferences.setMockInitialValues({
+      AppPreferences.showStartupScreenKey: false,
+    });
   });
 
   testWidgets('メイン画面が起動し分野ピッカーが使える', (WidgetTester tester) async {

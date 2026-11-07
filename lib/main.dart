@@ -14,7 +14,7 @@ import 'services/crash_log_service.dart';
 import 'services/privacy_service.dart';
 import 'services/timer_completion_sound_catalog.dart';
 import 'services/timer_notification_scheduler.dart';
-import 'views/main/main_view.dart';
+import 'views/main/app_root.dart';
 
 final AppSettingsNotifier appSettings = AppSettingsNotifier();
 const AppAppearance appAppearance = AppAppearance();
@@ -106,11 +106,7 @@ class _OsmWashabeAppState extends State<OsmWashabeApp> {
         ),
         useMaterial3: true,
       ),
-      home: MainView(
-        appearance: appAppearance,
-        settings: appSettings,
-        preferences: appPreferences,
-      ),
+      home: const AppRoot(),
     );
   }
 }
