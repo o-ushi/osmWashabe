@@ -49,8 +49,7 @@ class StartupBottomBar extends StatelessWidget {
                             ? accent
                             : Colors.transparent,
                       ),
-                      checkColor:
-                          appAppearance.foregroundOn(appAppearance.accentColor),
+                      checkColor: Colors.white,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -71,8 +70,7 @@ class StartupBottomBar extends StatelessWidget {
               onPressed: onPressed,
               style: FilledButton.styleFrom(
                 backgroundColor: accent,
-                foregroundColor:
-                    appAppearance.foregroundOn(appAppearance.accentColor),
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
