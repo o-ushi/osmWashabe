@@ -6,6 +6,8 @@ import 'dart:typed_data';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'wav_bytes.dart';
+
 /// iOS `TickBeepPlayer` — 880Hz 合成ビープ
 ///
 /// Swift 版と同様、ソースは一度だけ読み込み、[play] は stop → seek(0) → play のみ。
@@ -75,35 +77,6 @@ class TickBeepPlayer {
       samples[i] = (s * 32767).round().clamp(-32768, 32767);
     }
 
-    final dataSize = frameCount * 2;
-    final fileSize = 36 + dataSize;
-    final wav = BytesBuilder();
-    void append32(int v) {
-      final b = ByteData(4)..setUint32(0, v, Endian.little);
-      wav.add(b.buffer.asUint8List());
-    }
-
-    void append16(int v) {
-      final b = ByteData(2)..setUint16(0, v, Endian.little);
-      wav.add(b.buffer.asUint8List());
-    }
-
-    wav.add('RIFF'.codeUnits);
-    append32(fileSize);
-    wav.add('WAVEfmt '.codeUnits);
-    append32(16);
-    append16(1);
-    append16(1);
-    append32(sampleRate);
-    append32(sampleRate * 2);
-    append16(2);
-    append16(16);
-    wav.add('data'.codeUnits);
-    append32(dataSize);
-    for (final s in samples) {
-      final b = ByteData(2)..setInt16(0, s, Endian.little);
-      wav.add(b.buffer.asUint8List());
-    }
-    return wav.toBytes();
+    return pcm16MonoWav(samples, sampleRate: sampleRate);
   }
 }

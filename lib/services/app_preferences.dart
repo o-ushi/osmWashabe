@@ -12,6 +12,8 @@ class AppPreferences {
   static const mockExamShowQuestionKey = 'osmWashabe.mockExam.showQuestion';
   static const useBuiltInTopicsKey = 'osmWashabe.useBuiltInTopics';
   static const shakeAutoSpeakKey = 'osmWashabe.shakeAutoSpeak';
+  static const showStartupScreenKey = 'osmWashabe.showStartupScreen';
+  static const showUsageScreenKey = 'osmWashabe.showUsageScreen';
   static const scoringEnabledKey = 'osmWashabe.scoringEnabled';
   static const developerModeEnabledKey = 'osmWashabe.developerModeEnabled';
   static const speechVoiceGenderKey = 'osmWashabe.speech.voiceGender';
@@ -133,6 +135,13 @@ class AppPreferences {
   bool get useBuiltInTopics => _prefs.getBool(useBuiltInTopicsKey) ?? true;
   set useBuiltInTopics(bool value) =>
       _prefs.setBool(useBuiltInTopicsKey, value);
+
+  bool get showStartupScreen => _prefs.getBool(showStartupScreenKey) ?? true;
+  set showStartupScreen(bool value) =>
+      _prefs.setBool(showStartupScreenKey, value);
+
+  bool get showUsageScreen => _prefs.getBool(showUsageScreenKey) ?? true;
+  set showUsageScreen(bool value) => _prefs.setBool(showUsageScreenKey, value);
 
   bool get shakeAutoSpeak => _prefs.getBool(shakeAutoSpeakKey) ?? false;
   set shakeAutoSpeak(bool value) => _prefs.setBool(shakeAutoSpeakKey, value);

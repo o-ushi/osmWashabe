@@ -28,6 +28,9 @@ flutter_macos_podfile_setup
 
 target 'Runner' do
   use_frameworks!
+  # プラグインのソースは pub-cache にあり、ここでは直せない。
+  # そちらの警告は隠して、Runner 自身の警告だけ残す。
+  inhibit_all_warnings!
 
   flutter_install_all_macos_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
@@ -38,5 +41,9 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
+    target.build_configurations.each do |config|
+      # inhibit_all_warnings! は Objective-C だけ。Swift の非推奨も隠す。
+      config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
+    end
   end
 end

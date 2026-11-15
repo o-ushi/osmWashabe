@@ -47,6 +47,21 @@ class AppSettingsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get showStartupScreen => _prefs.showStartupScreen;
+
+  /// OFF にするときは使い方画面も一緒に OFF にする（osm日日是好日と同じ）。
+  set showStartupScreen(bool value) {
+    _prefs.showStartupScreen = value;
+    if (!value) _prefs.showUsageScreen = false;
+    notifyListeners();
+  }
+
+  bool get showUsageScreen => _prefs.showUsageScreen;
+  set showUsageScreen(bool value) {
+    _prefs.showUsageScreen = value;
+    notifyListeners();
+  }
+
   bool get shakeAutoSpeak => _prefs.shakeAutoSpeak;
   set shakeAutoSpeak(bool value) {
     _prefs.shakeAutoSpeak = value;

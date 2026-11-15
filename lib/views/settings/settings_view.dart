@@ -290,6 +290,21 @@ class _SettingsViewState extends State<SettingsView> {
                   _noteText('タイマー音_バイブレーション説明'.tr(lang)),
                   _noteText('インターバル_説明'.tr(lang)),
                 ]),
+                _group('案内', Icons.flag_outlined, Colors.teal, [
+                  _SwitchTile(
+                    label: 'スタートアップ画面'.tr(lang),
+                    value: settings.showStartupScreen,
+                    onChanged: (v) => settings.showStartupScreen = v,
+                  ),
+                  if (settings.showStartupScreen) ...[
+                    const _ItemDivider(),
+                    _SwitchTile(
+                      label: '使い方画面'.tr(lang),
+                      value: settings.showUsageScreen,
+                      onChanged: (v) => settings.showUsageScreen = v,
+                    ),
+                  ],
+                ]),
                 _group('採点履歴', Icons.assessment_outlined, AppColors.green, [
                   _inner([
                     _SwitchTile(

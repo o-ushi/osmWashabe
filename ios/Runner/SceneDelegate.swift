@@ -1,6 +1,12 @@
 import Flutter
 import UIKit
 
+/// シーン設定名。NSUserActivity の種別にも使われるので、逆引き DNS にする。
+/// "flutter" のようにピリオドが無いと iOS 27 が例外で止める。
+enum SceneConfiguration {
+  static let name = "com.osamushikubo.osmWashabe.scene"
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow?
 
@@ -9,6 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
+    if scene.userActivity == nil {
+      scene.userActivity = NSUserActivity(activityType: SceneConfiguration.name)
+    }
     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
     guard let windowScene = scene as? UIWindowScene else { return }
 
@@ -22,5 +31,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       bundle: nil
     )
     window?.makeKeyAndVisible()
+  }
+
+  func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+    // 以前の起動で残った設定名が "flutter" のとき、それを種別に使うと落ちる。
+    if scene.userActivity == nil {
+      let name = scene.session.configuration.name ?? ""
+      if !name.contains(".") {
+        return nil
+      }
+    }
+    return scene.userActivity
   }
 }

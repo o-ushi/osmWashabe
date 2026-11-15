@@ -1,7 +1,7 @@
 name: osm_washabe
 description: osmWashabe Flutter port
 publish_to: 'none'
-version: 3.2.1+1
+version: 3.2.2+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -41,4 +41,5 @@ flutter:
   assets:
     - assets/images/image_icon.png
     - assets/images/app_icon.png
+    - assets/images/chrome_ai_copy_button.png
     - assets/vosk/vosk-model-small-ja-0.22.zip
