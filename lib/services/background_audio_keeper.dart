@@ -5,6 +5,8 @@ import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'wav_bytes.dart';
+
 /// iOS `BackgroundAudioKeeper` — 無音ループでバックグラウンド動作を維持
 class BackgroundAudioKeeper {
   BackgroundAudioKeeper._();
@@ -124,37 +126,7 @@ class BackgroundAudioKeeper {
   }
 
   /// 0.1秒の無音 PCM WAV（iOS TickBeepPlayer と同様の生成方式）
-  Uint8List _buildMinimalWav() {
-    const sampleRate = 44100;
-    const frameCount = 4410;
-    const dataSize = frameCount * 2;
-    const fileSize = 36 + dataSize;
-    final wav = BytesBuilder();
-    void append32(int v) {
-      final b = ByteData(4)..setUint32(0, v, Endian.little);
-      wav.add(b.buffer.asUint8List());
-    }
-
-    void append16(int v) {
-      final b = ByteData(2)..setUint16(0, v, Endian.little);
-      wav.add(b.buffer.asUint8List());
-    }
-
-    wav.add('RIFF'.codeUnits);
-    append32(fileSize);
-    wav.add('WAVEfmt '.codeUnits);
-    append32(16);
-    append16(1);
-    append16(1);
-    append32(sampleRate);
-    append32(sampleRate * 2);
-    append16(2);
-    append16(16);
-    wav.add('data'.codeUnits);
-    append32(dataSize);
-    wav.add(Uint8List(dataSize));
-    return wav.toBytes();
-  }
+  Uint8List _buildMinimalWav() => pcm16MonoWav(Int16List(4410));
 
   Future<void> dispose() async {
     await stop();
