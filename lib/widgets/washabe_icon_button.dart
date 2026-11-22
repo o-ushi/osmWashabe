@@ -11,6 +11,8 @@ class WashabeIconButton extends StatelessWidget {
     this.foregroundColor,
     this.enabled = true,
     this.expand = false,
+    this.iconSize = 26,
+    this.verticalPadding = 8,
   });
 
   final IconData icon;
@@ -20,6 +22,8 @@ class WashabeIconButton extends StatelessWidget {
   final Color? foregroundColor;
   final bool enabled;
   final bool expand;
+  final double iconSize;
+  final double verticalPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +41,12 @@ class WashabeIconButton extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: expand ? 0 : 12,
-                vertical: 8,
+                vertical: verticalPadding,
               ),
               child: Icon(
                 icon,
                 color: enabled ? fg : fg.withValues(alpha: 0.38),
-                size: 26,
+                size: iconSize,
               ),
             ),
           ),

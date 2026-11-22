@@ -220,6 +220,12 @@ abstract final class AppStrings {
     '採点ON_ヒント': '採点ON（タップでOFF、長押しで結果）',
     '採点OFF_ヒント': '採点する（タップでON）',
     '採点結果がありません': '採点結果がありません',
+    // ── iPad 横向き 2 画面 ──
+    '採点待ち_2画面': '話し終わると、ここに文字起こしと採点が出ます。',
+    '模擬試験状態_出題なし': '出題なし',
+    '模擬試験状態_済': '済',
+    '模擬試験状態_いま': 'いま',
+    '模擬試験状態_これから': 'これから',
     '開発者モードを有効にしました': '開発者モードを有効にしました',
     '開発者モードを無効にしました': '開発者モードを無効にしました',
     '開発者向け': '開発者向け',
@@ -591,6 +597,13 @@ abstract final class AppStrings {
     '採点ON_ヒント': 'Scoring ON (tap off, hold for result)',
     '採点OFF_ヒント': 'Enable scoring (tap to turn on)',
     '採点結果がありません': 'No scoring result yet',
+    // ── iPad 横向き 2 画面 ──
+    '採点待ち_2画面':
+        'When you finish speaking, the transcript and scoring appear here.',
+    '模擬試験状態_出題なし': 'Skipped',
+    '模擬試験状態_済': 'Done',
+    '模擬試験状態_いま': 'Now',
+    '模擬試験状態_これから': 'Up next',
     '開発者モードを有効にしました': 'Developer mode enabled',
     '開発者モードを無効にしました': 'Developer mode disabled',
     '開発者向け': 'Developer',
@@ -971,6 +984,13 @@ abstract final class AppStrings {
     '採点ON_ヒント': 'Chấm điểm BẬT (chạm tắt, giữ xem kết quả)',
     '採点OFF_ヒント': 'Bật chấm điểm (chạm để bật)',
     '採点結果がありません': 'Chưa có kết quả chấm điểm',
+    // ── iPad 横向き 2 画面 ──
+    '採点待ち_2画面':
+        'Khi bạn nói xong, bản ghi lời nói và kết quả chấm điểm sẽ hiện ở đây.',
+    '模擬試験状態_出題なし': 'Bỏ qua',
+    '模擬試験状態_済': 'Xong',
+    '模擬試験状態_いま': 'Đang làm',
+    '模擬試験状態_これから': 'Sắp tới',
     '開発者モードを有効にしました': 'Đã bật chế độ nhà phát triển',
     '開発者モードを無効にしました': 'Đã tắt chế độ nhà phát triển',
     '開発者向け': 'Dành cho nhà phát triển',
