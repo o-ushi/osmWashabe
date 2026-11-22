@@ -47,6 +47,58 @@ class ScoringResultView extends StatefulWidget {
 
 class _ScoringResultViewState extends State<ScoringResultView> {
   final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final lang = widget.languageCode;
+    return SwipeDownToDismiss(
+      scrollController: _scrollController,
+      child: WashabeSubpageScaffold(
+        titleWidget: _ScoringResultTitle(lang: lang),
+        leading: const SizedBox.shrink(),
+        body: ScoringResultPanel(
+          controller: widget.controller,
+          languageCode: lang,
+          settings: widget.settings,
+          preferences: widget.preferences,
+          scrollController: _scrollController,
+        ),
+      ),
+    );
+  }
+}
+
+/// 採点結果のリスト本体（注意書き・読み込み・認識失敗・結果・録音再生・履歴移動）。
+///
+/// 採点シート（[ScoringResultView]）と iPad 横向きの右ペインの両方から使う。
+/// 白系の背景に載せる前提の配色。
+class ScoringResultPanel extends StatefulWidget {
+  const ScoringResultPanel({
+    super.key,
+    required this.controller,
+    required this.languageCode,
+    this.settings,
+    this.preferences,
+    this.scrollController,
+  });
+
+  final PracticeController controller;
+  final String languageCode;
+  final AppSettingsNotifier? settings;
+  final AppPreferences? preferences;
+  final ScrollController? scrollController;
+
+  @override
+  State<ScoringResultPanel> createState() => _ScoringResultPanelState();
+}
+
+class _ScoringResultPanelState extends State<ScoringResultPanel> {
   int _historyIndex = 0;
   DateTime? _latestHeadGeneratedAt;
 
@@ -57,7 +109,7 @@ class _ScoringResultViewState extends State<ScoringResultView> {
   }
 
   @override
-  void didUpdateWidget(covariant ScoringResultView oldWidget) {
+  void didUpdateWidget(covariant ScoringResultPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller == widget.controller) return;
     oldWidget.controller.removeListener(_handleControllerChange);
@@ -86,152 +138,139 @@ class _ScoringResultViewState extends State<ScoringResultView> {
   @override
   void dispose() {
     widget.controller.removeListener(_handleControllerChange);
-    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final lang = widget.languageCode;
-    return SwipeDownToDismiss(
-      scrollController: _scrollController,
-      child: WashabeSubpageScaffold(
-        titleWidget: _ScoringResultTitle(lang: lang),
-        leading: const SizedBox.shrink(),
-        body: ListenableBuilder(
-          listenable: widget.controller,
-          builder: (context, _) {
-            final history = widget.controller.scoringHistory;
-            final clampedIndex = history.isEmpty
-                ? 0
-                : _historyIndex.clamp(0, history.length - 1);
-            final result = history.isEmpty ? null : history[clampedIndex];
-            final isLoading = widget.controller.isAwaitingScoring ||
-                widget.controller.isOfflineTranscribing;
-            return ListView(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(16),
-              children: [
-                Text(
-                  'JSSTの「待遇表現」「テキストタイプ」「時間の使い方（流暢さ）」の3軸を近似したものです。公式の採点とは異なります。'
-                      .tr(lang),
-                  style: TextStyle(color: Colors.black.withValues(alpha: 0.6)),
+    return ListenableBuilder(
+      listenable: widget.controller,
+      builder: (context, _) {
+        final history = widget.controller.scoringHistory;
+        final clampedIndex =
+            history.isEmpty ? 0 : _historyIndex.clamp(0, history.length - 1);
+        final result = history.isEmpty ? null : history[clampedIndex];
+        final isLoading = widget.controller.isAwaitingScoring ||
+            widget.controller.isOfflineTranscribing;
+        return ListView(
+          controller: widget.scrollController,
+          padding: const EdgeInsets.all(16),
+          children: [
+            Text(
+              'JSSTの「待遇表現」「テキストタイプ」「時間の使い方（流暢さ）」の3軸を近似したものです。公式の採点とは異なります。'
+                  .tr(lang),
+              style: TextStyle(color: Colors.black.withValues(alpha: 0.6)),
+            ),
+            const SizedBox(height: 20),
+            if (!isLoading && history.length > 1)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.chevron_left),
+                      onPressed: clampedIndex < history.length - 1
+                          ? () =>
+                              setState(() => _historyIndex = clampedIndex + 1)
+                          : null,
+                    ),
+                    Text(
+                      '${history.length - clampedIndex} / ${history.length}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withValues(alpha: 0.6),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.chevron_right),
+                      onPressed: clampedIndex > 0
+                          ? () =>
+                              setState(() => _historyIndex = clampedIndex - 1)
+                          : null,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                if (!isLoading && history.length > 1)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.chevron_left),
-                          onPressed: clampedIndex < history.length - 1
-                              ? () => setState(
-                                  () => _historyIndex = clampedIndex + 1)
+              ),
+            // 録音再生ボタン: 最新結果のみ表示（ローディング中・履歴表示中は非表示）
+            if (!isLoading &&
+                clampedIndex == 0 &&
+                widget.controller.lastRecordingPath != null)
+              _RecordingPlaybackCard(
+                path: widget.controller.lastRecordingPath!,
+                lang: lang,
+              ),
+            if (isLoading)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40),
+                child: Column(
+                  children: [
+                    if (Platform.isAndroid &&
+                        (widget.controller.isOfflineTranscribing ||
+                            widget.controller.scoringProgress > 0)) ...[
+                      SizedBox(
+                        width: double.infinity,
+                        child: LinearProgressIndicator(
+                          value: widget.controller.scoringProgress > 0
+                              ? widget.controller.scoringProgress
+                                  .clamp(0.02, 1.0)
                               : null,
+                          minHeight: 8,
+                          borderRadius: BorderRadius.circular(4),
                         ),
+                      ),
+                      const SizedBox(height: 12),
+                      if (widget.controller.scoringProgress > 0) ...[
                         Text(
-                          '${history.length - clampedIndex} / ${history.length}',
+                          '${(widget.controller.scoringProgress * 100).round()}%',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black.withValues(alpha: 0.75),
+                            fontFeatures: const [FontFeature.tabularFigures()],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                      Text(
+                        widget.controller.scoringProgressPhaseKey.tr(lang),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black.withValues(alpha: 0.6),
+                        ),
+                      ),
+                    ] else ...[
+                      const CircularProgressIndicator(),
+                      if (Platform.isAndroid) ...[
+                        const SizedBox(height: 16),
+                        Text(
+                          '採点中_音声解析'.tr(lang),
+                          style: TextStyle(
                             color: Colors.black.withValues(alpha: 0.6),
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.chevron_right),
-                          onPressed: clampedIndex > 0
-                              ? () => setState(
-                                  () => _historyIndex = clampedIndex - 1)
-                              : null,
-                        ),
                       ],
-                    ),
-                  ),
-                // 録音再生ボタン: 最新結果のみ表示（ローディング中・履歴表示中は非表示）
-                if (!isLoading &&
-                    clampedIndex == 0 &&
-                    widget.controller.lastRecordingPath != null)
-                  _RecordingPlaybackCard(
-                    path: widget.controller.lastRecordingPath!,
-                    lang: lang,
-                  ),
-                if (isLoading)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40),
-                    child: Column(
-                      children: [
-                        if (Platform.isAndroid &&
-                            (widget.controller.isOfflineTranscribing ||
-                                widget.controller.scoringProgress > 0)) ...[
-                          SizedBox(
-                            width: double.infinity,
-                            child: LinearProgressIndicator(
-                              value: widget.controller.scoringProgress > 0
-                                  ? widget.controller.scoringProgress
-                                      .clamp(0.02, 1.0)
-                                  : null,
-                              minHeight: 8,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          if (widget.controller.scoringProgress > 0) ...[
-                            Text(
-                              '${(widget.controller.scoringProgress * 100).round()}%',
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black.withValues(alpha: 0.75),
-                                fontFeatures: const [
-                                  FontFeature.tabularFigures()
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                          Text(
-                            widget.controller.scoringProgressPhaseKey.tr(lang),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black.withValues(alpha: 0.6),
-                            ),
-                          ),
-                        ] else ...[
-                          const CircularProgressIndicator(),
-                          if (Platform.isAndroid) ...[
-                            const SizedBox(height: 16),
-                            Text(
-                              '採点中_音声解析'.tr(lang),
-                              style: TextStyle(
-                                color: Colors.black.withValues(alpha: 0.6),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ],
-                    ),
-                  )
-                else if (history.isEmpty)
-                  Text(
-                    '発話を認識できませんでした'.tr(lang),
-                    style:
-                        TextStyle(color: Colors.black.withValues(alpha: 0.6)),
-                  )
-                else
-                  _ScoringResultContent(
-                    result: result!,
-                    lang: lang,
-                    preferences:
-                        (widget.settings?.developerModeEnabled ?? false)
-                            ? widget.preferences
-                            : null,
-                  ),
-              ],
-            );
-          },
-        ),
-      ),
+                    ],
+                  ],
+                ),
+              )
+            else if (history.isEmpty)
+              Text(
+                '発話を認識できませんでした'.tr(lang),
+                style: TextStyle(color: Colors.black.withValues(alpha: 0.6)),
+              )
+            else
+              _ScoringResultContent(
+                result: result!,
+                lang: lang,
+                preferences: (widget.settings?.developerModeEnabled ?? false)
+                    ? widget.preferences
+                    : null,
+              ),
+          ],
+        );
+      },
     );
   }
 }

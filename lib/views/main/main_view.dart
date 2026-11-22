@@ -61,6 +61,9 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   final _innerNavigatorKey = GlobalKey<NavigatorState>();
   bool _isScoringSheetOpen = false;
 
+  /// iPad 横向き（左右 2 画面）で描いているか。採点シートの自動表示を止めるのに使う。
+  bool _isTwoPaneLayout = false;
+
   @override
   void initState() {
     super.initState();
@@ -90,6 +93,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   }
 
   void _onControllerChanged() {
+    // 2 画面のあいだは結果を右ペインに出すので、シートは自動で開かない。
+    if (_isTwoPaneLayout) return;
     if (!_isScoringSheetOpen && _controller.isAwaitingScoring) {
       _isScoringSheetOpen = true;
       _openSheet(
@@ -212,6 +217,25 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
 
   String get _lang => widget.settings.language;
 
+  /// iPad 横向き（短辺 600 以上の横長）のときだけ左右 2 画面にする。
+  static bool _isTablet(BuildContext context) =>
+      MediaQuery.sizeOf(context).shortestSide >= 600;
+
+  static bool _wantsTwoPane(BuildContext context) =>
+      _isTablet(context) &&
+      MediaQuery.orientationOf(context) == Orientation.landscape;
+
+  void _syncTwoPaneLayout(bool twoPane) {
+    if (twoPane == _isTwoPaneLayout) return;
+    _isTwoPaneLayout = twoPane;
+    if (twoPane) return;
+    // 縦に戻したとき、まだ採点待ちなら今の自動シートを開く。
+    // 横のあいだに右ペインで見た結果は、もう一度シートに出さない。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _onControllerChanged();
+    });
+  }
+
   Future<void> _openSheet(Widget child) async {
     await _speechReader.stop();
     if (!mounted) return;
@@ -325,6 +349,68 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                 (_controller.sessionMode == AppSessionMode.mockExam &&
                     _controller.isMockExamActive);
 
+        final isSingleQuestion =
+            _controller.sessionMode == AppSessionMode.singleQuestion;
+        final isMockExamRunning =
+            _controller.sessionMode == AppSessionMode.mockExam &&
+                _controller.isMockExamActive;
+        final twoPane = _wantsTwoPane(context);
+        _syncTwoPaneLayout(twoPane);
+        // iPad は縦横どちらも離れて見るので、文字とボタンを大きくする
+        final tablet = _isTablet(context);
+
+        // 今の 1 列（縦持ち・iPhone）の本体。2 画面では練習側のカラムになる。
+        List<Widget> practiceColumn() => [
+              if (_controller.sessionMode == AppSessionMode.singleQuestion)
+                _CompactTrainingBar(
+                  controller: _controller,
+                  appearance: widget.appearance,
+                  scene: scene,
+                  fg: fg,
+                  lang: lang,
+                  large: tablet,
+                ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: _controller.sessionMode == AppSessionMode.mockExam &&
+                        !_controller.isMockExamActive &&
+                        !_controller.isMockExamFinished
+                    ? _MockExamIntro(
+                        controller: _controller,
+                        appearance: widget.appearance,
+                        frameStyle: frameStyle,
+                        scene: scene,
+                        fg: fg,
+                        muted: muted,
+                        lang: lang,
+                      )
+                    : _PracticeBody(
+                        controller: _controller,
+                        speechReader: _speechReader,
+                        appearance: widget.appearance,
+                        frameStyle: frameStyle,
+                        scene: scene,
+                        fg: fg,
+                        muted: muted,
+                        lang: lang,
+                        onCategoryChanged: _controller.setCategory,
+                        large: tablet,
+                      ),
+              ),
+              if (showTimer) ...[
+                const SizedBox(height: 10),
+                WashabeTimerSection(
+                  controller: _controller,
+                  appearance: widget.appearance,
+                  scene: scene,
+                  frameStyle: frameStyle,
+                  accent: accent,
+                  languageCode: lang,
+                  large: tablet,
+                ),
+              ],
+            ];
+
         final dialogBg = effectiveScheme == Brightness.dark
             ? const Color(0xFF2C2C38)
             : Colors.white;
@@ -366,70 +452,106 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _SessionBar(
-                            controller: _controller,
-                            settings: widget.settings,
-                            appearance: widget.appearance,
-                            scene: scene,
-                            fg: fg,
-                            moreButtonKey: _moreButtonKey,
-                            lang: lang,
-                            onMore: () => _showMoreMenu(context),
-                            onOpenScoring: _onScoringButtonLongPress,
-                            onScoringTap: _onScoringButtonTap,
-                          ),
-                          const SizedBox(height: 10),
-                          if (_controller.sessionMode ==
-                              AppSessionMode.singleQuestion)
-                            _CompactTrainingBar(
+                      child: MediaQuery(
+                        // iPad は離れて見るので、文字をまとめて大きくする
+                        data: tablet
+                            ? MediaQuery.of(context).copyWith(
+                                textScaler: TextScaler.linear(
+                                  MediaQuery.textScalerOf(context).scale(1) *
+                                      _tabletTextScale,
+                                ),
+                              )
+                            : MediaQuery.of(context),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _SessionBar(
                               controller: _controller,
+                              settings: widget.settings,
                               appearance: widget.appearance,
                               scene: scene,
                               fg: fg,
+                              moreButtonKey: _moreButtonKey,
                               lang: lang,
+                              onMore: () => _showMoreMenu(context),
+                              onOpenScoring: _onScoringButtonLongPress,
+                              onScoringTap: _onScoringButtonTap,
+                              large: tablet,
                             ),
-                          const SizedBox(height: 10),
-                          Expanded(
-                            child: _controller.sessionMode ==
-                                        AppSessionMode.mockExam &&
-                                    !_controller.isMockExamActive &&
-                                    !_controller.isMockExamFinished
-                                ? _MockExamIntro(
-                                    controller: _controller,
-                                    appearance: widget.appearance,
-                                    frameStyle: frameStyle,
-                                    scene: scene,
-                                    fg: fg,
-                                    muted: muted,
-                                    lang: lang,
-                                  )
-                                : _PracticeBody(
-                                    controller: _controller,
-                                    speechReader: _speechReader,
-                                    appearance: widget.appearance,
-                                    frameStyle: frameStyle,
-                                    scene: scene,
-                                    fg: fg,
-                                    muted: muted,
-                                    lang: lang,
-                                    onCategoryChanged: _controller.setCategory,
-                                  ),
-                          ),
-                          if (showTimer) ...[
                             const SizedBox(height: 10),
-                            WashabeTimerSection(
-                              controller: _controller,
-                              appearance: widget.appearance,
-                              scene: scene,
-                              frameStyle: frameStyle,
-                              accent: accent,
-                              languageCode: lang,
-                            ),
+                            if (twoPane && isSingleQuestion)
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: practiceColumn(),
+                                      ),
+                                    ),
+                                    const SizedBox(width: _paneGap),
+                                    Expanded(
+                                      child: _SingleQuestionSidePane(
+                                        controller: _controller,
+                                        settings: widget.settings,
+                                        preferences: widget.preferences,
+                                        fg: fg,
+                                        lang: lang,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            else if (twoPane && isMockExamRunning)
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                      child: _MockExamProgressList(
+                                        controller: _controller,
+                                        appearance: widget.appearance,
+                                        scene: scene,
+                                        fg: fg,
+                                        muted: muted,
+                                        lang: lang,
+                                      ),
+                                    ),
+                                    const SizedBox(width: _paneGap),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: practiceColumn(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            else if (twoPane)
+                              // 模擬試験の紹介と終了画面は、横でも 1 列を中央に置く。
+                              Expanded(
+                                child: Center(
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      maxWidth: _centeredColumnMaxWidth,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: practiceColumn(),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            else
+                              ...practiceColumn(),
                           ],
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -443,6 +565,15 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   }
 }
 
+/// iPad 横向き 2 画面の左右の間隔
+const double _paneGap = 20;
+
+/// iPad 横向きで 1 列のまま中央に置く画面（模擬試験の紹介・終了）の最大幅
+const double _centeredColumnMaxWidth = 720;
+
+/// iPad（縦横とも）の文字の倍率（端末の文字サイズ設定に掛ける）
+const double _tabletTextScale = 1.6;
+
 class _SessionBar extends StatelessWidget {
   const _SessionBar({
     required this.controller,
@@ -455,6 +586,7 @@ class _SessionBar extends StatelessWidget {
     required this.onMore,
     required this.onOpenScoring,
     required this.onScoringTap,
+    this.large = false,
   });
 
   final PracticeController controller;
@@ -467,6 +599,9 @@ class _SessionBar extends StatelessWidget {
   final VoidCallback onMore;
   final VoidCallback onOpenScoring;
   final VoidCallback onScoringTap;
+
+  /// iPad では離れて見えるようにボタンを大きくする
+  final bool large;
 
   static const _scoringOnFill = AppColors.green;
   static const _scoringOnIcon = Colors.white;
@@ -491,17 +626,17 @@ class _SessionBar extends StatelessWidget {
               onTap: isMockExam ? null : onScoringTap,
               onLongPress: scoringOn ? onOpenScoring : null,
               child: Padding(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(large ? 14 : 8),
                 child: Icon(
                   scoringOn ? Icons.assessment : Icons.assessment_outlined,
                   color: scoringOn ? _scoringOnIcon : fg,
-                  size: 22,
+                  size: large ? 44 : 22,
                 ),
               ),
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: large ? 14 : 8),
         Expanded(
           child: _sessionButton(
             icon: Icons.looks_one_rounded,
@@ -511,7 +646,7 @@ class _SessionBar extends StatelessWidget {
                 controller.setSessionMode(AppSessionMode.singleQuestion),
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: large ? 14 : 8),
         Expanded(
           child: _sessionButton(
             icon: Icons.format_list_numbered,
@@ -520,7 +655,7 @@ class _SessionBar extends StatelessWidget {
             onTap: () => controller.setSessionMode(AppSessionMode.mockExam),
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: large ? 14 : 8),
         Tooltip(
           message: 'その他'.tr(lang),
           child: Material(
@@ -531,8 +666,8 @@ class _SessionBar extends StatelessWidget {
               customBorder: const CircleBorder(),
               onTap: onMore,
               child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Icon(Icons.more_horiz, color: fg, size: 22),
+                padding: EdgeInsets.all(large ? 14 : 8),
+                child: Icon(Icons.more_horiz, color: fg, size: large ? 44 : 22),
               ),
             ),
           ),
@@ -556,6 +691,8 @@ class _SessionBar extends StatelessWidget {
       backgroundColor:
           selected ? fg.withValues(alpha: 0.15) : Colors.transparent,
       foregroundColor: fg,
+      iconSize: large ? 48 : 26,
+      verticalPadding: large ? 16 : 8,
     );
   }
 }
@@ -567,6 +704,7 @@ class _CompactTrainingBar extends StatelessWidget {
     required this.scene,
     required this.fg,
     required this.lang,
+    this.large = false,
   });
 
   final PracticeController controller;
@@ -574,12 +712,13 @@ class _CompactTrainingBar extends StatelessWidget {
   final Color scene;
   final Color fg;
   final String lang;
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
     return _compactBar(
-      height: 32,
-      radius: 8,
+      height: large ? 88 : 32,
+      radius: large ? 14 : 8,
       background: appearance.subtleFill(scene, 0.12),
       children: [
         _compactTab(
@@ -630,10 +769,10 @@ class _CompactTrainingBar extends StatelessWidget {
     return Expanded(
       child: Material(
         color: appearance.accentChipFill(scene, selected: selected),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(large ? 12 : 6),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(large ? 12 : 6),
           child: SizedBox.expand(
             child: Center(
               child: Text(
@@ -641,7 +780,7 @@ class _CompactTrainingBar extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: large ? 22 : 11,
                   fontWeight: FontWeight.w600,
                   color: fg,
                 ),
@@ -820,6 +959,221 @@ class _MockExamIntro extends StatelessWidget {
   }
 }
 
+String _mockStepLabel(MockExamQuestionKind kind, String lang) {
+  return switch (kind) {
+    MockExamQuestionKind.normal45 => '模擬試験ラベル_通常'.tr(lang),
+    MockExamQuestionKind.normal60 => '模擬試験ラベル_60秒'.tr(lang),
+    MockExamQuestionKind.normal15plus60 => '模擬試験ラベル_準備付き'.tr(lang),
+    MockExamQuestionKind.situationKeigo => '模擬試験ラベル_敬語'.tr(lang),
+  };
+}
+
+/// iPad 横向き・1問ずつの右ペイン。
+///
+/// 採点オンは発話後の文字起こしと採点（[ScoringResultPanel]）、採点オフは大きな残り秒数だけ。
+/// 認識はタイマー終了後に確定するので、話す前と話しているあいだは待ち表示にする。
+class _SingleQuestionSidePane extends StatelessWidget {
+  const _SingleQuestionSidePane({
+    required this.controller,
+    required this.settings,
+    required this.preferences,
+    required this.fg,
+    required this.lang,
+  });
+
+  final PracticeController controller;
+  final AppSettingsNotifier settings;
+  final AppPreferences preferences;
+  final Color fg;
+  final String lang;
+
+  /// 採点シート（WashabeSubpageScaffold）と同じ地色
+  static const _panelBackground = Color(0xFFF2F2F7);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!settings.scoringEnabled) {
+      return Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            '${controller.remainingSeconds}',
+            style: TextStyle(
+              color: fg,
+              fontSize: 180,
+              fontWeight: FontWeight.w700,
+              height: 1,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final showResults = controller.isAwaitingScoring ||
+        controller.isOfflineTranscribing ||
+        (controller.isTimerFinished && !controller.isTimerRunning);
+
+    // 採点 UI は白地前提の配色なので、シートと同じ明るいテーマで包む。
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Theme(
+        data: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppColors.blue,
+            brightness: Brightness.light,
+          ),
+        ),
+        child: ColoredBox(
+          color: _panelBackground,
+          child: showResults
+              ? ScoringResultPanel(
+                  controller: controller,
+                  languageCode: lang,
+                  settings: settings,
+                  preferences: preferences,
+                )
+              : Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.assessment_outlined,
+                          size: 40,
+                          color: Colors.black.withValues(alpha: 0.35),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          '採点待ち_2画面'.tr(lang),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black.withValues(alpha: 0.6),
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+/// iPad 横向き・模擬試験の実施中の左ペイン。10 問の進行を上から並べる（タップ不可・点数なし）。
+class _MockExamProgressList extends StatelessWidget {
+  const _MockExamProgressList({
+    required this.controller,
+    required this.appearance,
+    required this.scene,
+    required this.fg,
+    required this.muted,
+    required this.lang,
+  });
+
+  final PracticeController controller;
+  final AppAppearance appearance;
+  final Color scene;
+  final Color fg;
+  final Color muted;
+  final String lang;
+
+  @override
+  Widget build(BuildContext context) {
+    final steps = controller.mockExamSteps;
+    final start = controller.mockExamStartIndex;
+    final current = controller.mockExamStepIndex;
+    return ListView.separated(
+      itemCount: steps.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      itemBuilder: (context, index) {
+        final _MockStepStatus status;
+        if (index < start) {
+          status = _MockStepStatus.skipped;
+        } else if (index < current) {
+          status = _MockStepStatus.done;
+        } else if (index == current) {
+          status = _MockStepStatus.current;
+        } else {
+          status = _MockStepStatus.upcoming;
+        }
+        final isCurrent = status == _MockStepStatus.current;
+        final rowFg = switch (status) {
+          _MockStepStatus.skipped => muted.withValues(alpha: 0.6),
+          _MockStepStatus.done || _MockStepStatus.upcoming => muted,
+          _MockStepStatus.current => fg,
+        };
+        final statusLabel = switch (status) {
+          _MockStepStatus.skipped => '模擬試験状態_出題なし',
+          _MockStepStatus.done => '模擬試験状態_済',
+          _MockStepStatus.current => '模擬試験状態_いま',
+          _MockStepStatus.upcoming => '模擬試験状態_これから',
+        }
+            .tr(lang);
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: isCurrent
+                ? appearance.accentChipFill(scene, selected: true)
+                : appearance.subtleFill(scene, 0.08),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 44,
+                  child: Text(
+                    '${index + 1}',
+                    style: TextStyle(
+                      color: rowFg,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      fontFeatures: const [FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    _mockStepLabel(steps[index].kind, lang),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: rowFg,
+                      fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                if (status == _MockStepStatus.done) ...[
+                  Icon(Icons.check_rounded, size: 20, color: rowFg),
+                  const SizedBox(width: 4),
+                ],
+                Text(
+                  statusLabel,
+                  style: TextStyle(
+                    color: rowFg,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+enum _MockStepStatus { skipped, done, current, upcoming }
+
 class _PracticeBody extends StatelessWidget {
   const _PracticeBody({
     required this.controller,
@@ -831,6 +1185,7 @@ class _PracticeBody extends StatelessWidget {
     required this.muted,
     required this.lang,
     required this.onCategoryChanged,
+    this.large = false,
   });
 
   final PracticeController controller;
@@ -843,14 +1198,8 @@ class _PracticeBody extends StatelessWidget {
   final String lang;
   final ValueChanged<TopicCategory> onCategoryChanged;
 
-  String _mockStepLabel(MockExamQuestionKind kind) {
-    return switch (kind) {
-      MockExamQuestionKind.normal45 => '模擬試験ラベル_通常'.tr(lang),
-      MockExamQuestionKind.normal60 => '模擬試験ラベル_60秒'.tr(lang),
-      MockExamQuestionKind.normal15plus60 => '模擬試験ラベル_準備付き'.tr(lang),
-      MockExamQuestionKind.situationKeigo => '模擬試験ラベル_敬語'.tr(lang),
-    };
-  }
+  /// iPad のとき、文字とボタンを大きくする
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -877,6 +1226,7 @@ class _PracticeBody extends StatelessWidget {
         muted: muted,
         lang: lang,
         onCategoryChanged: onCategoryChanged,
+        large: large,
       );
     }
 
@@ -889,7 +1239,8 @@ class _PracticeBody extends StatelessWidget {
       fg: fg,
       muted: muted,
       lang: lang,
-      mockStepLabel: _mockStepLabel,
+      mockStepLabel: (kind) => _mockStepLabel(kind, lang),
+      large: large,
     );
   }
 }
@@ -908,6 +1259,7 @@ class _PrimaryActionRow extends StatelessWidget {
     required this.lang,
     required this.isSpeaking,
     required this.isPaused,
+    this.large = false,
   });
 
   final IconData primaryIcon;
@@ -922,6 +1274,7 @@ class _PrimaryActionRow extends StatelessWidget {
   final String lang;
   final bool isSpeaking;
   final bool isPaused;
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -953,9 +1306,11 @@ class _PrimaryActionRow extends StatelessWidget {
               selected: primaryEnabled,
             ),
             foregroundColor: fg,
+            iconSize: large ? 80 : 26,
+            verticalPadding: large ? 28 : 8,
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: large ? 14 : 8),
         Expanded(
           flex: 2,
           child: WashabeIconButton(
@@ -969,6 +1324,8 @@ class _PrimaryActionRow extends StatelessWidget {
               (readAloudEnabled || isPaused) ? 0.16 : 0.08,
             ),
             foregroundColor: fg,
+            iconSize: large ? 80 : 26,
+            verticalPadding: large ? 28 : 8,
           ),
         ),
       ],
@@ -987,6 +1344,7 @@ class _NormalModeContent extends StatelessWidget {
     required this.muted,
     required this.lang,
     required this.onCategoryChanged,
+    this.large = false,
   });
 
   final PracticeController controller;
@@ -998,6 +1356,7 @@ class _NormalModeContent extends StatelessWidget {
   final Color muted;
   final String lang;
   final ValueChanged<TopicCategory> onCategoryChanged;
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -1039,6 +1398,7 @@ class _NormalModeContent extends StatelessWidget {
           lang: lang,
           isSpeaking: speechReader.isSpeaking,
           isPaused: controller.isPaused,
+          large: large,
         ),
         const SizedBox(height: 8),
         if (controller.hasDrawnTopic)
@@ -1087,6 +1447,7 @@ class _MockExamActiveContent extends StatelessWidget {
     required this.muted,
     required this.lang,
     required this.mockStepLabel,
+    this.large = false,
   });
 
   final PracticeController controller;
@@ -1098,6 +1459,9 @@ class _MockExamActiveContent extends StatelessWidget {
   final Color muted;
   final String lang;
   final String Function(MockExamQuestionKind kind) mockStepLabel;
+
+  /// iPad のとき、ボタンを大きくする
+  final bool large;
 
   Future<void> _confirmAbort(BuildContext context) async {
     final confirmed = await showDialog<bool>(
@@ -1134,7 +1498,8 @@ class _MockExamActiveContent extends StatelessWidget {
               '${controller.mockExamStepIndex + 1}',
               '${controller.mockExamSteps.length}',
             ]),
-            style: TextStyle(color: fg, fontWeight: FontWeight.w600),
+            style: TextStyle(
+                color: fg, fontWeight: FontWeight.w600, fontSize: null),
             textAlign: TextAlign.center,
           ),
           Text(
@@ -1142,7 +1507,7 @@ class _MockExamActiveContent extends StatelessWidget {
             style: TextStyle(color: muted, fontSize: 12),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: large ? 16 : 12),
         ],
         if (step != null &&
             showQuestion &&
@@ -1179,6 +1544,8 @@ class _MockExamActiveContent extends StatelessWidget {
                   selected: speechReader.isSpeaking,
                 ),
                 foregroundColor: fg,
+                iconSize: large ? 40 : 26,
+                verticalPadding: large ? 18 : 8,
               ),
             ),
           )
@@ -1192,11 +1559,12 @@ class _MockExamActiveContent extends StatelessWidget {
             onTap: () => _confirmAbort(context),
             borderRadius: BorderRadius.circular(10),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              padding: EdgeInsets.symmetric(
+                  vertical: large ? 14 : 10, horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.cancel_rounded, color: fg, size: 20),
+                  Icon(Icons.cancel_rounded, color: fg, size: large ? 24 : 20),
                   const SizedBox(width: 8),
                   Text(
                     '模擬試験を終了'.tr(lang),

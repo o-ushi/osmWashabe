@@ -18,6 +18,7 @@ class WashabeTimerSection extends StatelessWidget {
     required this.frameStyle,
     required this.accent,
     required this.languageCode,
+    this.large = false,
   });
 
   final PracticeController controller;
@@ -27,14 +28,16 @@ class WashabeTimerSection extends StatelessWidget {
   final Color accent;
   final String languageCode;
 
+  /// iPad では秒数とボタンを大きくする（文字は画面側の倍率でも大きくなる）
+  final bool large;
+
   @override
   Widget build(BuildContext context) {
     final canToggle = controller.isTimerRunning ||
         controller.isAwaitingSpeakingPhaseStart ||
         (!controller.isTimerFinished && controller.remainingSeconds > 0);
 
-    final readableAccent =
-        appearance.readableAccent(frameStyle.cardFill);
+    final readableAccent = appearance.readableAccent(frameStyle.cardFill);
     final chipSelected = appearance.accentChipFill(
       frameStyle.cardFill,
       selected: controller.isTimerRunning,
@@ -58,14 +61,14 @@ class WashabeTimerSection extends StatelessWidget {
             Text(
               '${controller.intervalRemainingSeconds}',
               style: TextStyle(
-                fontSize: 44,
+                fontSize: large ? 56 : 44,
                 fontWeight: FontWeight.bold,
                 color: frameStyle.readableSecondaryText,
                 fontFeatures: const [FontFeature.tabularFigures()],
                 letterSpacing: -0.5,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: large ? 10 : 6),
             Row(
               children: [
                 Expanded(
@@ -75,17 +78,21 @@ class WashabeTimerSection extends StatelessWidget {
                     onPressed: null,
                     enabled: false,
                     expand: true,
+                    iconSize: large ? 40 : 26,
+                    verticalPadding: large ? 16 : 8,
                     backgroundColor: chipSelected,
                     foregroundColor: frameStyle.readablePrimaryText,
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: large ? 12 : 8),
                 Expanded(
                   child: WashabeIconButton(
                     icon: Icons.refresh_rounded,
                     tooltip: 'リセット'.tr(languageCode),
                     onPressed: controller.resetTimer,
                     expand: true,
+                    iconSize: large ? 40 : 26,
+                    verticalPadding: large ? 16 : 8,
                     backgroundColor: chipMuted,
                     foregroundColor: frameStyle.readablePrimaryText,
                   ),
@@ -107,14 +114,14 @@ class WashabeTimerSection extends StatelessWidget {
             Text(
               '${controller.remainingSeconds}',
               style: TextStyle(
-                fontSize: 44,
+                fontSize: large ? 56 : 44,
                 fontWeight: FontWeight.bold,
                 color: frameStyle.readablePrimaryText,
                 fontFeatures: const [FontFeature.tabularFigures()],
                 letterSpacing: -0.5,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: large ? 10 : 6),
             Row(
               children: [
                 Expanded(
@@ -128,17 +135,21 @@ class WashabeTimerSection extends StatelessWidget {
                     onPressed: canToggle ? controller.toggleTimer : null,
                     enabled: canToggle,
                     expand: true,
+                    iconSize: large ? 40 : 26,
+                    verticalPadding: large ? 16 : 8,
                     backgroundColor: chipSelected,
                     foregroundColor: frameStyle.readablePrimaryText,
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: large ? 12 : 8),
                 Expanded(
                   child: WashabeIconButton(
                     icon: Icons.refresh_rounded,
                     tooltip: 'リセット'.tr(languageCode),
                     onPressed: controller.resetTimer,
                     expand: true,
+                    iconSize: large ? 40 : 26,
+                    verticalPadding: large ? 16 : 8,
                     backgroundColor: chipMuted,
                     foregroundColor: frameStyle.readablePrimaryText,
                   ),

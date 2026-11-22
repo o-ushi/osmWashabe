@@ -29,8 +29,8 @@
 ## iOS / リリース前
 
 - [x] Release不要のBonjour / Local Network用途説明をInfo.plistから除外
-- [x] iPhone専用（`TARGETED_DEVICE_FAMILY = 1`）
-- [x] 縦向きのみ
+- [x] iPhone と iPad（`TARGETED_DEVICE_FAMILY = "1,2"`）
+- [x] 向き: iPhone は縦のみ、iPad は 4 方向（`UISupportedInterfaceOrientations~ipad`。横は左右 2 画面）
 - [x] build番号を1増加
 - [ ] App Store ConnectのPrivacy Policy URLを公開URLへ設定
 - [ ] App Privacy回答を実装と一致させる
