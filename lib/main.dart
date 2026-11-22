@@ -53,10 +53,11 @@ Future<void> bootstrap({bool initializeNotifications = true}) async {
 Future<void> main() async {
   await bootstrap();
   await CrashLogService.init();
-  // iPhone は Info.plist が縦だけ、Android はマニフェストが portrait なので横にならない。
-  // iPad だけ横向き（アプリ内の左右 2 画面）を許可する。
+  // iPhone は Info.plist が縦だけ、Android はマニフェストが portrait なので回らない。
+  // iPad だけ 4 方向（逆さ縦と、アプリ内の左右 2 画面になる横）を許可する。
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);

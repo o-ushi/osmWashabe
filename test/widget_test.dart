@@ -72,4 +72,25 @@ void main() {
     await tester.pump();
     expect(find.text('いま'), findsNothing);
   });
+
+  testWidgets('iPad 縦は 1 列のまま大きな文字で崩れない', (WidgetTester tester) async {
+    // iPad mini の縦（いちばん狭い iPad）
+    setSurface(tester, const Size(744, 1133));
+    await ensureBooted();
+    appSettings.language = 'ja';
+    appSettings.scoringEnabled = false;
+    await tester.pumpWidget(const OsmWashabeApp());
+    await tester.pump();
+
+    // 1 列（右ペインの大きな秒数は出ない）
+    expect(find.byTooltip('お題を引く'), findsOneWidget);
+    expect(find.text('45'), findsOneWidget);
+    await tester.tap(find.byTooltip('お題を引く'));
+    await tester.pump(const Duration(seconds: 1));
+
+    // 模擬試験の紹介も 1 列のまま
+    await tester.tap(find.byTooltip('模擬試験'));
+    await tester.pump();
+    expect(find.text('いま'), findsNothing);
+  });
 }

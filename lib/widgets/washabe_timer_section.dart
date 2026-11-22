@@ -28,7 +28,7 @@ class WashabeTimerSection extends StatelessWidget {
   final Color accent;
   final String languageCode;
 
-  /// iPad 横向き 2 画面では秒数とボタンを大きくする（文字は画面側の倍率でも大きくなる）
+  /// iPad では秒数とボタンを大きくする（文字は画面側の倍率でも大きくなる）
   final bool large;
 
   @override

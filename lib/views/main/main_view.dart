@@ -218,9 +218,12 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   String get _lang => widget.settings.language;
 
   /// iPad 横向き（短辺 600 以上の横長）のときだけ左右 2 画面にする。
-  static bool _wantsTwoPane(BuildContext context) =>
-      MediaQuery.orientationOf(context) == Orientation.landscape &&
+  static bool _isTablet(BuildContext context) =>
       MediaQuery.sizeOf(context).shortestSide >= 600;
+
+  static bool _wantsTwoPane(BuildContext context) =>
+      _isTablet(context) &&
+      MediaQuery.orientationOf(context) == Orientation.landscape;
 
   void _syncTwoPaneLayout(bool twoPane) {
     if (twoPane == _isTwoPaneLayout) return;
@@ -353,6 +356,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                 _controller.isMockExamActive;
         final twoPane = _wantsTwoPane(context);
         _syncTwoPaneLayout(twoPane);
+        // iPad は縦横どちらも離れて見るので、文字とボタンを大きくする
+        final tablet = _isTablet(context);
 
         // 今の 1 列（縦持ち・iPhone）の本体。2 画面では練習側のカラムになる。
         List<Widget> practiceColumn() => [
@@ -363,7 +368,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                   scene: scene,
                   fg: fg,
                   lang: lang,
-                  large: twoPane,
+                  large: tablet,
                 ),
               const SizedBox(height: 10),
               Expanded(
@@ -389,7 +394,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                         muted: muted,
                         lang: lang,
                         onCategoryChanged: _controller.setCategory,
-                        large: twoPane,
+                        large: tablet,
                       ),
               ),
               if (showTimer) ...[
@@ -401,7 +406,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                   frameStyle: frameStyle,
                   accent: accent,
                   languageCode: lang,
-                  large: twoPane,
+                  large: tablet,
                 ),
               ],
             ];
@@ -448,12 +453,12 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 16),
                       child: MediaQuery(
-                        // iPad 横向き 2 画面は離れて見るので、文字をまとめて大きくする
-                        data: twoPane
+                        // iPad は離れて見るので、文字をまとめて大きくする
+                        data: tablet
                             ? MediaQuery.of(context).copyWith(
                                 textScaler: TextScaler.linear(
                                   MediaQuery.textScalerOf(context).scale(1) *
-                                      _twoPaneTextScale,
+                                      _tabletTextScale,
                                 ),
                               )
                             : MediaQuery.of(context),
@@ -471,7 +476,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                               onMore: () => _showMoreMenu(context),
                               onOpenScoring: _onScoringButtonLongPress,
                               onScoringTap: _onScoringButtonTap,
-                              large: twoPane,
+                              large: tablet,
                             ),
                             const SizedBox(height: 10),
                             if (twoPane && isSingleQuestion)
@@ -566,8 +571,8 @@ const double _paneGap = 20;
 /// iPad 横向きで 1 列のまま中央に置く画面（模擬試験の紹介・終了）の最大幅
 const double _centeredColumnMaxWidth = 720;
 
-/// iPad 横向き 2 画面の文字の倍率（端末の文字サイズ設定に掛ける）
-const double _twoPaneTextScale = 1.6;
+/// iPad（縦横とも）の文字の倍率（端末の文字サイズ設定に掛ける）
+const double _tabletTextScale = 1.6;
 
 class _SessionBar extends StatelessWidget {
   const _SessionBar({
@@ -595,7 +600,7 @@ class _SessionBar extends StatelessWidget {
   final VoidCallback onOpenScoring;
   final VoidCallback onScoringTap;
 
-  /// iPad 横向き 2 画面では離れて見えるようにボタンを大きくする
+  /// iPad では離れて見えるようにボタンを大きくする
   final bool large;
 
   static const _scoringOnFill = AppColors.green;
@@ -1193,7 +1198,7 @@ class _PracticeBody extends StatelessWidget {
   final String lang;
   final ValueChanged<TopicCategory> onCategoryChanged;
 
-  /// iPad 横向き 2 画面のとき、模擬試験の右側を大きな文字にする
+  /// iPad のとき、文字とボタンを大きくする
   final bool large;
 
   @override
@@ -1455,7 +1460,7 @@ class _MockExamActiveContent extends StatelessWidget {
   final String lang;
   final String Function(MockExamQuestionKind kind) mockStepLabel;
 
-  /// iPad 横向き 2 画面の右側は文字を大きくする
+  /// iPad のとき、ボタンを大きくする
   final bool large;
 
   Future<void> _confirmAbort(BuildContext context) async {
